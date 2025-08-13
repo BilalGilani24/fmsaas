@@ -1,0 +1,44 @@
+{
+  "name": "fm-crm",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.20.0",
+    "@react-pdf/renderer": "^4.1.6",
+    "@schedule-x/drag-and-drop": "^2.4.1",
+    "@schedule-x/event-modal": "^2.4.1",
+    "@schedule-x/events-service": "^2.4.1",
+    "@schedule-x/react": "^2.4.1",
+    "@schedule-x/theme-default": "^2.4.1",
+    "axios": "^1.7.8",
+    "flowbite": "^2.5.2",
+    "html2canvas": "^1.4.1",
+    "jsonwebtoken": "^9.0.2",
+    "jspdf": "^3.0.1",
+    "lucide-react": "^0.453.0",
+    "next": "14.2.15",
+    "next-auth": "^4.24.8",
+    "next-cloudinary": "^6.16.0",
+    "react": "^18",
+    "react-confetti": "^6.1.0",
+    "react-confetti-explosion": "^2.1.2",
+    "react-dom": "^18",
+    "react-hook-form": "^7.54.0",
+    "react-toastify": "^10.0.6",
+    "recharts": "^2.13.0",
+    "zustand": "^5.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^8",
+    "eslint-config-next": "14.2.15",
+    "postcss": "^8",
+    "prisma": "^5.20.0",
+    "tailwindcss": "^3.4.1"
+  }
+}

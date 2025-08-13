@@ -1,0 +1,347 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  Superadmin
+  Admin
+  Student
+}
+
+model Branch {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  Branchname String
+}
+
+model User {
+  id                           String                @id @default(auto()) @map("_id") @db.ObjectId
+  Name                         String
+  Password                     String
+  Email                        String                @unique
+  BranchName                   String
+  Mobile                       String?
+  Status                       Boolean
+  Role                         Role
+  Enquiry                      Enquiry[]
+  Createstudent                Createstudent[]       @relation("UserToCreatestudent")
+  AdminStudents                Createstudent[]       @relation("AdminToCreatestudent")
+  SuperadminStudents           Createstudent[]       @relation("SuperadminToCreatestudent")
+  AdminId                      String?               @db.ObjectId
+  Admin                        User?                 @relation("AdminToStudent", fields: [AdminId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Students                     User[]                @relation("AdminToStudent")
+  Academicdetail               Academicdetail[]      @relation("UserToAcademicdetail")
+  StudentDetails               Academicdetail[]      @relation("StudentToAcademic")
+  Proficencytest               Proficencytest[]      @relation("UserToProficencytest")
+  StudentTests                 Proficencytest[]      @relation("StudentToProficencytest")
+  Workexperiences              Workexp[]             @relation("UserToWorkexp")
+  StudentWorkexps              Workexp[]             @relation("StudentToWorkexp")
+  Suggesteduniversities        Suggesteduniversity[] @relation("UserToSuggesteduniversity")
+  StudentSuggesteduniversities Suggesteduniversity[] @relation("StudentToSuggesteduniversity")
+  Applicationinvoices          Applicationinvoice[]  @relation("UserToApplicationinvoice")
+  StudentApplicationinvoices   Applicationinvoice[]  @relation("StudentToApplicationinvoice")
+  Consultancyinvoices          Consultancyinvoice[]  @relation("UserToConsultancyinvoice")
+  StudentConsultancyinvoices   Consultancyinvoice[]  @relation("StudentToConsultancyinvoice")
+  ApplicationSubmissions       Application[]         @relation("UserToApplication")
+  AdminApplications            Application[]         @relation("AdminToApplication")
+  SuperadminApplications       Application[]         @relation("SuperadminToApplication")
+  VisaSubmissions              Visa[]                @relation("UserToVisa")
+  AdminVisas                   Visa[]                @relation("AdminToVisa")
+  SuperadminVisas              Visa[]                @relation("SuperadminToVisa")
+  EnrollSubmissions            Enroll[]              @relation("UserToEnroll")
+  AdminEnrolls                 Enroll[]              @relation("AdminToEnroll")
+  SuperadminEnrolls            Enroll[]              @relation("SuperadminToEnroll")
+  DeferSubmissions             Defer[]               @relation("UserToDefer")
+  AdminDefers                  Defer[]               @relation("AdminToDefer")
+  SuperadminDefers             Defer[]               @relation("SuperadminToDefer")
+}
+
+model Enquiry {
+  id                 String   @id @default(auto()) @map("_id") @db.ObjectId
+  FirstName          String
+  LastName           String
+  Emailaddress       String
+  Gender             String
+  Intrestedcountry   String
+  DOB                String
+  Intake             String
+  Applylevel         String
+  Test               String
+  Mobilenumber       String
+  Alternativenumber  String
+  Intrestedcourse    String
+  Branchname         String
+  Source             String
+  Movetostudent      Boolean
+  Appointmentdate    String?
+  Appointmenttime    String?
+  Appointmentremarks String?
+  Followupdate       String?
+  Followuptime       String?
+  Followupremarks    String?
+  Enquirystatus      String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  user               User     @relation(fields: [userId], references: [id])
+  userId             String   @db.ObjectId
+}
+
+model Createstudent {
+  id                    String                @id @default(auto()) @map("_id") @db.ObjectId
+  FirstName             String
+  LastName              String
+  Emailaddress          String
+  Gender                String
+  Intrestedcountry      String
+  DOB                   String
+  Intake                String
+  Applylevel            String
+  Test                  String
+  Mobilenumber          String
+  Alternativenumber     String
+  Intrestedcourse       String
+  Branchname            String
+  Source                String
+  Appointmentdate       String?
+  Appointmenttime       String?
+  Appointmentremarks    String?
+  Followupdate          String?
+  Followuptime          String?
+  Followupremarks       String?
+  Studentstatus         String?
+  Movetoapplication     Boolean
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+  user                  User                  @relation("UserToCreatestudent", fields: [userId], references: [id])
+  userId                String                @db.ObjectId
+  Admin                 User?                 @relation("AdminToCreatestudent", fields: [AdminId], references: [id])
+  AdminId               String?               @db.ObjectId
+  Superadmin            User?                 @relation("SuperadminToCreatestudent", fields: [SuperadminId], references: [id])
+  SuperadminId          String?               @db.ObjectId
+  Academicdetail        Academicdetail[]
+  Proficencytest        Proficencytest[]
+  Workexperiences       Workexp[]
+  Suggesteduniversities Suggesteduniversity[]
+  Applicationinvoices   Applicationinvoice[]
+  Consultancyinvoices   Consultancyinvoice[]
+}
+
+model Application {
+  id                 String               @id @default(auto()) @map("_id") @db.ObjectId
+  FirstName          String
+  LastName           String
+  Emailaddress       String
+  Gender             String
+  Intrestedcountry   String
+  DOB                String
+  Intake             String
+  Applylevel         String
+  Test               String
+  Mobilenumber       String
+  Alternativenumber  String
+  Intrestedcourse    String
+  Branchname         String
+  Movetovisa         Boolean
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  userId             String               @db.ObjectId
+  user               User                 @relation("UserToApplication", fields: [userId], references: [id])
+  AdminId            String?              @db.ObjectId
+  Admin              User?                @relation("AdminToApplication", fields: [AdminId], references: [id])
+  SuperadminId       String?              @db.ObjectId
+  Superadmin         User?                @relation("SuperadminToApplication", fields: [SuperadminId], references: [id])
+  Studentapplication Studentapplication[]
+}
+
+model Studentapplication {
+  id                String      @id @default(auto()) @map("_id") @db.ObjectId
+  Universityname    String
+  Course            String
+  Intake            String
+  Applylevel        String
+  Applicationresult String
+  Resultdoc         String
+  Application       Application @relation(fields: [applicationId], references: [id])
+  applicationId     String      @db.ObjectId
+}
+
+model Academicdetail {
+  id              String         @id @default(auto()) @map("_id") @db.ObjectId
+  Qualification   String
+  Subject         String
+  Institute       String
+  Grade           String
+  Backlogs        String?
+  YearStarting    String
+  Yearpassing     String
+  Docs            String
+  userId          String         @db.ObjectId
+  user            User?          @relation("UserToAcademicdetail", fields: [userId], references: [id])
+  StudentId       String         @db.ObjectId
+  student         User?          @relation("StudentToAcademic", fields: [StudentId], references: [id])
+  createstudentId String?        @db.ObjectId
+  createstudent   Createstudent? @relation(fields: [createstudentId], references: [id])
+}
+
+model Visa {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  Name         String
+  Email        String
+  Mobilenumber String
+  Country      String
+  Intake       String
+  Applylevel   String
+  Branch       String
+  Visastatus   String
+  Deferreason  String
+  Doc          String
+  Course       String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  userId       String   @db.ObjectId
+  user         User     @relation("UserToVisa", fields: [userId], references: [id])
+  AdminId      String?  @db.ObjectId
+  Admin        User?    @relation("AdminToVisa", fields: [AdminId], references: [id])
+  SuperadminId String?  @db.ObjectId
+  Superadmin   User?    @relation("SuperadminToVisa", fields: [SuperadminId], references: [id])
+}
+
+model Defer {
+  id             String  @id @default(auto()) @map("_id") @db.ObjectId
+  Name           String
+  Email          String
+  Mobilenumber   String
+  Deferintake    String
+  Deferreason    String
+  Deferletter    String
+  Appliedcountry String
+  Applylevel     String
+  Course         String
+  Branch         String
+  userId         String  @db.ObjectId
+  user           User    @relation("UserToDefer", fields: [userId], references: [id])
+  AdminId        String? @db.ObjectId
+  Admin          User?   @relation("AdminToDefer", fields: [AdminId], references: [id])
+  SuperadminId   String? @db.ObjectId
+  Superadmin     User?   @relation("SuperadminToDefer", fields: [SuperadminId], references: [id])
+}
+
+model Enroll {
+  id             String  @id @default(auto()) @map("_id") @db.ObjectId
+  Name           String
+  Email          String
+  Mobilenumber   String
+  Enrollintake   String
+  Approveletter  String
+  Appliedcountry String
+  Applylevel     String
+  Course         String
+  Branch         String
+  userId         String  @db.ObjectId
+  user           User    @relation("UserToEnroll", fields: [userId], references: [id])
+  AdminId        String? @db.ObjectId
+  Admin          User?   @relation("AdminToEnroll", fields: [AdminId], references: [id])
+  SuperadminId   String? @db.ObjectId
+  Superadmin     User?   @relation("SuperadminToEnroll", fields: [SuperadminId], references: [id])
+}
+
+model Proficencytest {
+  id              String         @id @default(auto()) @map("_id") @db.ObjectId
+  Testname        String
+  Listening       String?
+  Reading         String?
+  Writing         String?
+  Speaking        String?
+  Overall         String?
+  Totalscore      String?
+  Docs            String
+  userId          String         @db.ObjectId
+  user            User?          @relation("UserToProficencytest", fields: [userId], references: [id])
+  StudentId       String?        @db.ObjectId
+  student         User?          @relation("StudentToProficencytest", fields: [StudentId], references: [id])
+  createstudentId String?        @db.ObjectId
+  createstudent   Createstudent? @relation(fields: [createstudentId], references: [id])
+}
+
+model Workexp {
+  id              String         @id @default(auto()) @map("_id") @db.ObjectId
+  Comapanyname    String?
+  Position        String?
+  StartingDate    String?
+  EndingDate      String?
+  TotalExperince  String?
+  Docs            String?
+  userId          String         @db.ObjectId
+  user            User?          @relation("UserToWorkexp", fields: [userId], references: [id])
+  StudentId       String?        @db.ObjectId
+  student         User?          @relation("StudentToWorkexp", fields: [StudentId], references: [id])
+  createstudentId String?        @db.ObjectId
+  createstudent   Createstudent? @relation(fields: [createstudentId], references: [id])
+}
+
+model Suggesteduniversity {
+  id              String         @id @default(auto()) @map("_id") @db.ObjectId
+  Universityname  String?
+  Intake          String?
+  Country         String?
+  Docs            String?
+  userId          String         @db.ObjectId
+  user            User?          @relation("UserToSuggesteduniversity", fields: [userId], references: [id])
+  StudentId       String?        @db.ObjectId
+  student         User?          @relation("StudentToSuggesteduniversity", fields: [StudentId], references: [id])
+  createstudentId String?        @db.ObjectId
+  createstudent   Createstudent? @relation(fields: [createstudentId], references: [id])
+}
+
+model Consultancyinvoice {
+  id                   String         @id @default(auto()) @map("_id") @db.ObjectId
+  Name                 String
+  Phonenumber          String
+  Email                String
+  PaymentMethod        String
+  Paymentstatus        String
+  Country              String
+  Consultancyfee       String?
+  Branchname           String
+  Status               String
+  Docs                 String?
+  Universityname       String?
+  Secoundpayment       String?
+  Secounddocs          String?
+  SecoundpaymentMethod String?
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+  userId               String         @db.ObjectId
+  user                 User?          @relation("UserToConsultancyinvoice", fields: [userId], references: [id])
+  StudentId            String?        @db.ObjectId
+  student              User?          @relation("StudentToConsultancyinvoice", fields: [StudentId], references: [id])
+  createstudentId      String?        @db.ObjectId
+  createstudent        Createstudent? @relation(fields: [createstudentId], references: [id])
+}
+
+model Applicationinvoice {
+  id              String         @id @default(auto()) @map("_id") @db.ObjectId
+  Name            String
+  Phonenumber     String
+  Email           String
+  PaymentMethod   String
+  Paymentstatus   String
+  Country         String
+  Applicationfee  String
+  Branchname      String
+  Status          String
+  Universityname  String
+  Docs            String?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  userId          String         @db.ObjectId
+  user            User?          @relation("UserToApplicationinvoice", fields: [userId], references: [id])
+  StudentId       String?        @db.ObjectId
+  student         User?          @relation("StudentToApplicationinvoice", fields: [StudentId], references: [id])
+  createstudentId String?        @db.ObjectId
+  createstudent   Createstudent? @relation(fields: [createstudentId], references: [id])
+}
