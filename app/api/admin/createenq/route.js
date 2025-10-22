@@ -28,6 +28,7 @@ export async function POST(req) {
       Followuptime,
       Followupremarks,
       Enquirystatus,
+       Address  
     } = body;
 
     // Create a new enquiry in the database
@@ -54,6 +55,7 @@ export async function POST(req) {
         Followupdate,
         Followuptime,
         Followupremarks,
+         Address,
         Enquirystatus: "",
         Movetostudent:true
       },

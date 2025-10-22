@@ -5,11 +5,13 @@ import axios from "axios";
 const useUserStore = create((set) => ({
   userId: null, // Initial user ID
   email: null, // Initial email
+  name: null, // Initial name
   adminId: null, // Store Admin ID
   branchConsulars: [], // Store fetched data
 
   setUserId: (id) => set({ userId: id }),
   setEmail: (email) => set({ email }),
+  setName: (name) => set({ name }),
   setAdminId: (adminId) => set({ adminId }),
   setBranchConsulars: (data) => set({ branchConsulars: data }),
 
@@ -17,10 +19,11 @@ const useUserStore = create((set) => ({
     try {
       const session = await getSession(); // Fetch session data
       if (session && session.user) {
-        const { id, email, AdminId } = session.user;
+        const { id, email, AdminId, name } = session.user;
         set({
           userId: id,
-          email: email,
+          email,
+          name,
           adminId: AdminId || null, // Store AdminId if available
         });
       }
@@ -37,7 +40,7 @@ const useUserStore = create((set) => ({
       const { id, AdminId } = session.user;
 
       const response = await axios.post("/api/admin/singleuser", {
-        id: id,
+        id,
         AdminId: AdminId || null, // Send AdminId if available
       });
 

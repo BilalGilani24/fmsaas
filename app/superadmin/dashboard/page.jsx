@@ -1,87 +1,115 @@
 "use client";
-import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Stackareachart from "../charts/stackareachart";
 import CustomPieChart from "../charts/piechart";
 import Headerpic from "./headerpic";
 import { Link } from "lucide-react";
 import Enrolldefer from "../charts/deferenrollchart";
+import axios from "axios";
+import { toast } from "react-toastify";
+import useUserStore from "@/app/store/userid";
+import Loader from "../loader";
 
 const Dashboard = () => {
+  const [stats, setStats] = useState({
+    enquiry: [],
+    students: [],
+    applications: [],
+    visa: [],
+  });
+
+  const [loading, setLoading] = useState({
+    enquiry: true,
+    students: true,
+    applications: true,
+    visa: true,
+  });
+
+  const { userId, initializeUser } = useUserStore();
+
+  // Generic function to fetch stats
+  const fetchStat = async (api, key, payload = {}) => {
+    setLoading((prev) => ({ ...prev, [key]: true }));
+    try {
+      const res = await axios.post(api, payload);
+      setStats((prev) => ({ ...prev, [key]: res.data }));
+    } catch (error) {
+      toast.error(`Error getting ${key} length`);
+    } finally {
+      setLoading((prev) => ({ ...prev, [key]: false }));
+    }
+  };
+
+  useEffect(() => {
+    initializeUser();
+    if (!userId) return;
+
+    fetchStat("/api/admin/enqlength", "enquiry", { userId });
+    fetchStat("/api/admin/studentlength", "students", { AdminId: userId });
+    fetchStat("/api/admin/applicationlength", "applications", { AdminId: userId });
+    fetchStat("/api/admin/getvisalength", "visa", { AdminId: userId });
+  }, [userId]);
+
+  const statCards = [
+    { label: "Enquiry", key: "enquiry" },
+    { label: "Students", key: "students" },
+    { label: "Applications", key: "applications" },
+    { label: "Visa", key: "visa" },
+  ];
+
   return (
-    <div className="flex dm-sans flex-col">
-      <div className=" flex ml-52 mt-5 justify-center items-center ">
+    <div className="relative ml-52 min-h-screen flex flex-col overflow-hidden text-white">
+      {/* Header */}
+      <div className="flex justify-center mt-6">
         <Headerpic />
       </div>
-      <div className=" ml-[840px] mt-5">
-        <form class="max-w-sm mx-auto">
-          <label
-            for="countries"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Select Branch{" "}
-            <strong className=" text-blue-500">(Branch Wise Stats)</strong>
-          </label>
-          <select
-            id="countries"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          >
-            <option selected>Choose a Branch</option>
-            <option value="US">Own Account</option>
-            <option value="US">Lahore</option>
-            <option value="CA">Islamabad</option>
-            <option value="FR">Lahore</option>
-            <option value="DE">Karachi</option>
-          </select>
-        </form>
-      </div>
-      <div className="dm-sans justify-center ml-52 mt-8 items-center flex flex-row gap-5">
-        {["Enquiry", "Students", "Applications", "Visa"].map((item, index) => (
+
+      {/* Stat cards */}
+      <div className="flex flex-wrap cursor-default justify-center gap-8 mt-12 px-6">
+        {statCards.map(({ label, key }, index) => (
           <div
             key={index}
-            className={`rounded-2xl ${
-              index % 2 === 0 ? "bg-lamaPurple" : "bg-lamaYellow"
-            } p-4 w-60`}
+            className="rounded-2xl bg-white/10 backdrop-blur-xl  border-white/20 shadow-md p-4 w-60 text-center transition-all duration-300 hover:bg-white/15"
           >
             <div className="flex justify-between items-center">
-              <span className="text-[10px] bg-white px-2 py-1 rounded-full text-green-600">
-                2024/25
+              <span className="text-[10px] bg-white/20 px-2 py-1 rounded-full text-green-200">
+                2025
               </span>
-              <Link width={20} height={20} />
+              <Link width={20} height={20} className="text-gray-300" />
             </div>
-            <h1 className="text-2xl font-semibold my-4">
-              {index === 0 ? 14 : index === 1 ? 34 : index === 2 ? 34 : 24}
-            </h1>
-            <h2 className="capitalize text-sm font-medium text-gray-500">
-              {item}
-            </h2>
+
+            {/* Loader or value */}
+            {loading[key] ? (
+              <div className="flex justify-center my-4">
+               <Loader/>
+              </div>
+            ) : (
+              <h1 className="text-4xl font-extrabold my-4 tracking-tight">
+                {stats[key]?.length || 0}
+              </h1>
+            )}
+
+            <h2 className="capitalize text-sm font-medium text-gray-200">{label}</h2>
           </div>
         ))}
       </div>
 
-      <div className="flex mt-8 ml-44 flex-row justify-center ">
-        <div className="flex flex-col ml-16 w-[700px]">
-          <h1 className="text-center mb-5 text-2xl dm-sans">Summary Chart</h1>
-          <div className="w-full  p-3 h-[330px] shadow-sm border rounded-lg">
-            <Stackareachart />
-          </div>
+      {/* Charts */}
+      <div className="flex flex-col ml-10 mb-10 lg:flex-row justify-center items-start gap-5 mt-16 px-10">
+        {/* Area chart */}
+        <div className="flex flex-col  border-white/20 shadow-md rounded-2xl bg-white/10 backdrop-blur-xl p-6 w-[850px]">
+          <h1 className="text-xl font-semibold mb-4">
+            Defer & Enrolled Students (Country Wise)
+          </h1>
+          <Enrolldefer />
         </div>
 
-        <div className="flex flex-col ml-3 mr-4  w-[360px]">
-          <h1 className="text-center mb-5 text-2xl dm-sans">
+        {/* Pie chart */}
+        <div className=" border-white/20 shadow-md rounded-2xl bg-white/10 backdrop-blur-xl p-6 w-[380px] h-[390px]">
+          <h1 className="text-xl font-semibold text-center mb-4">
             Country Wise Leads
           </h1>
-          <div className="w-full  h-[330px] border shadow-sm rounded-lg">
-            <CustomPieChart />
-          </div>
-        </div>
-      </div>
-      <div className=" mt-5 flex-col gap-5 flex justify-center items-center">
-        <div>
-          <h1 className="text-2xl">Defer & Enrolled Students (Country Wise)</h1>
-        </div>
-        <div className="w-5/6 ml-48 mb-5">
-          <Enrolldefer />
+          <CustomPieChart />
         </div>
       </div>
     </div>

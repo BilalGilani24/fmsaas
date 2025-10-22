@@ -1,85 +1,89 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import {
   LineChart,
   Line,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
   Legend,
   ResponsiveContainer,
 } from "recharts";
-
-const data = [
-  {
-    name: "America",
-    Enroll: 4000,
-    Defer: 2400,
-    amt: 2400,
-  },
-  {
-    name: "United Kingdom",
-    Enroll: 3000,
-    Defer: 1398,
-    amt: 2210,
-  },
-  {
-    name: "Canada",
-    Enroll: 2000,
-    Defer: 9800,
-    amt: 2290,
-  },
-  {
-    name: "Malaysia",
-    Enroll: 9090,
-    Defer: 3908,
-    amt: 2000,
-  },
-  {
-    name: "Australia",
-    Enroll: 1890,
-    Defer: 4800,
-    amt: 2181,
-  },
-];
+import axios from "axios";
+import useUserStore from "@/app/store/userid";
 
 const Enrolldefer = () => {
-  const [opacity, setOpacity] = React.useState({
-    Defer: 1,
-    Enroll: 1,
-  });
+  const { userId, initializeUser } = useUserStore();
 
-  const handleMouseEnter = (o) => {
-    const { dataKey } = o;
+  const countries = [
+    "United States",
+    "United Kingdom",
+    "Canada",
+    "Malaysia",
+    "Australia",
+    "Finland",
+    "Lithuania",
+    "Spain",
+    "Ireland",
+    "France",
+    "Germany",
+    "Sweden",
+    "Romania",
+    "UAE",
+  ];
 
+  const [stats, setStats] = useState({ Defer: {}, Enroll: {} });
+  const [opacity, setOpacity] = useState({ Defer: 1, Enroll: 1 });
+
+  const handleMouseEnter = ({ dataKey }) =>
     setOpacity((op) => ({ ...op, [dataKey]: 0.5 }));
-  };
-
-  const handleMouseLeave = (o) => {
-    const { dataKey } = o;
-
+  const handleMouseLeave = ({ dataKey }) =>
     setOpacity((op) => ({ ...op, [dataKey]: 1 }));
+
+  const fetchStats = async (api, key) => {
+    try {
+      const res = await axios.post(api, { AdminId: userId });
+      const data = res.data || [];
+      const counts = {};
+      countries.forEach(
+        (country) =>
+          (counts[country] =
+            data.find((item) => item.country === country)?.count || 0)
+      );
+      setStats((prev) => ({ ...prev, [key]: counts }));
+    } catch (error) {
+      console.error(`Error fetching ${key} length:`, error);
+      toast.error(`Error getting ${key} Length`);
+    }
   };
+
+  useEffect(() => {
+    initializeUser();
+    if (!userId) return;
+    fetchStats("/api/admin/deferlength", "Defer");
+    fetchStats("/api/admin/enrollength", "Enroll");
+  }, [userId]);
+
+  const data = countries.map((country) => ({
+    name: country,
+    Enroll: stats.Enroll[country] || 0,
+    Defer: stats.Defer[country] || 0,
+  }));
 
   return (
     <div style={{ width: "100%" }}>
       <ResponsiveContainer width="100%" height={300}>
-        <LineChart
-          width={500}
-          height={300}
-          data={data}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
+        <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+          <XAxis dataKey="name" tick={{ fill: "#fff", fontSize: 11 }} />
+          <YAxis tick={{ fill: "#fff", fontSize: 10 }} />
+          <Tooltip
+            contentStyle={{ backgroundColor: "#333", border: "none", fontSize: 10 }}
+            labelStyle={{ color: "#fff", fontSize: 10 }}
+            itemStyle={{ color: "#fff", fontSize: 10 }}
+          />
           <Legend
+            wrapperStyle={{ color: "#fff", fontSize: 20 }}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           />

@@ -1,5 +1,4 @@
 import localFont from "next/font/local";
-import "../globals.css";
 import Sidebar from "./sidebar/sidebar";
 import Navbar from "./navbar/navbar";
 import { ToastContainer } from "react-toastify";

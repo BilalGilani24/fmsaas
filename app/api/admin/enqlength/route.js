@@ -4,11 +4,11 @@ const prisma = new PrismaClient();
 
 export async function POST(req) {
   const body = await req.json();
-  const { id } = body;
+  const {userId} = body;
   try {
     const getbranch = await prisma.enquiry.findMany({
       where: {
-        userId: id,
+        userId: userId,
         Movetostudent: true
       },
       select: {

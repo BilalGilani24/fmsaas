@@ -31,7 +31,6 @@ const Applicationinvoice = () => {
   const {
     register,
     handleSubmit,
-    setValue,
     watch,
     reset,
     formState: { errors },
@@ -81,7 +80,8 @@ const Applicationinvoice = () => {
         };
   return (
     <div>
-      <div class="bg-white p-8 ml-52 border mt-5 rounded-lg shadow-md">
+      <div class="bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl
+ p-8 ml-52  mt-5 rounded-lg ">
         <div class="flex flex-wrap gap-5 items-center w-full max-md:max-w-full mb-10">
           <div class="flex flex-wrap flex-1 shrink gap-5 items-center self-stretch my-auto basis-0 min-w-[240px] max-md:max-w-full">
             <div class="flex relative flex-col justify-center self-stretch bg-gray-100 h-[70px] min-h-[70px] rounded-[16px] overflow-hidden w-[70px]">
@@ -90,7 +90,7 @@ const Applicationinvoice = () => {
               </div>
             </div>
             <div class="flex flex-col self-stretch my-auto min-w-[240px]">
-              <div class="text-base text-gray-800">
+              <div class="text-base text-white">
                 University Application Invoice
               </div>
               <div class="mt-2 text-sm  text-red-500">
@@ -105,14 +105,14 @@ const Applicationinvoice = () => {
             <form class="max-w-sm mx-auto" >
               <label
                 for="countries"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-sm font-medium text-white dark:text-white"
               >
                 Select Name
               </label>
               <select
                 {...register("name")}
                 id="countries"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 text-gray-900 text-sm rounded-lg  focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
                 <option value="US">Choose Name</option>
 
@@ -129,14 +129,14 @@ const Applicationinvoice = () => {
             <form class="max-w-sm mx-auto">
               <label
                 for="countries"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-sm font-medium text-white dark:text-white"
               >
                 Select Phone Number
               </label>
               <select
                {...register("phone")}
                 id="countries"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 text-gray-900 text-sm rounded-lg  focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
                 <option selected>Choose Phone Number</option>
        {getstudent?.map((student, index) => (
@@ -152,14 +152,14 @@ const Applicationinvoice = () => {
             <form class="max-w-sm mx-auto">
               <label
                 for="countries"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-sm font-medium text-white dark:text-white"
               >
                 Select Branch Name
               </label>
               <select
               {...register("branch")}
                 id="countries"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 text-gray-900 text-sm rounded-lg  focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
                 <option selected>Choose a country</option>
                 <option value={singlebranchname}>{singlebranchname}</option>
@@ -172,14 +172,14 @@ const Applicationinvoice = () => {
             <form class="max-w-sm mx-auto">
               <label
                 for="countries"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-sm font-medium text-white dark:text-white"
               >
                 Select an Email
               </label>
               <select
                 {...register("email")}
                 id="countries"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 text-gray-900 text-sm rounded-lg  focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
                 <option selected>Choose Email</option>
               {getstudent?.map((student, index) => (
@@ -195,14 +195,14 @@ const Applicationinvoice = () => {
             <form class="max-w-sm mx-auto">
               <label
                 for="countries"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-sm font-medium text-white dark:text-white"
               >
                 Select Payment Method
               </label>
               <select
                    {...register("paymentMethod")}
                 id="countries"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 text-gray-900 text-sm rounded-lg  focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
                     <option value="">Choose Payment Method</option>
                 <option value="Cash">Cash</option>
@@ -219,14 +219,14 @@ const Applicationinvoice = () => {
             <form class="max-w-sm mx-auto">
               <label
                 for="countries"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-sm font-medium text-white dark:text-white"
               >
                 Select Payment Status
               </label>
               <select
                {...register("paymentStatus")}
                 id="countries"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 text-gray-900 text-sm rounded-lg  focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
                  <option value="">Choose Payment Status</option>
                 <option value="Paid">Paid</option>
@@ -238,14 +238,14 @@ const Applicationinvoice = () => {
             <form class="max-w-sm mx-auto">
               <label
                 for="countries"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-sm font-medium text-white dark:text-white"
               >
                 Select Country
               </label>
               <select
                 {...register("country")}
                 id="countries"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 text-gray-900 text-sm rounded-lg  focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
                <option value="">Choose Country</option>
                 <option value="United States">USA</option>
@@ -258,7 +258,7 @@ const Applicationinvoice = () => {
           <div id="input" class="relative">
             <label
               for="first_name"
-              class="block mb-2 ml-2 text-sm font-medium text-gray-900 dark:text-white"
+              class="block mb-2 ml-2 text-sm font-medium text-white dark:text-white"
             >
               Enter University Name
             </label>
@@ -266,7 +266,7 @@ const Applicationinvoice = () => {
               type="text"
               id="first_name"
                  {...register("university")}
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-96 ml-2 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 text-gray-900 text-sm rounded-lg  focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Oxford University"
               required
             />
@@ -274,7 +274,7 @@ const Applicationinvoice = () => {
           <div id="input" class="relative">
             <label
               for="first_name"
-              class="block mb-2 ml-2 text-sm font-medium text-gray-900 dark:text-white"
+              class="block mb-2 ml-2 text-sm font-medium text-white dark:text-white"
             >
               Enter Application Fee Amount
             </label>
@@ -282,7 +282,7 @@ const Applicationinvoice = () => {
                {...register("fee")}
               type="text"
               id="first_name"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-96 ml-2 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 text-gray-900 text-sm rounded-lg  focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="15000"
               required
             />
@@ -292,7 +292,7 @@ const Applicationinvoice = () => {
         <div class="sm:flex sm:flex-row-reverse flex gap-4 ">
           <button
           onClick={handleSubmit(createrecipt)}
-            class="w-fit rounded-lg text-sm px-5 py-2 focus:outline-none h-[50px] border bg-blue-500 hover:bg-violet-600 focus:bg-violet-700 border-violet-500-violet- text-white focus:ring-4 focus:ring-violet-200 hover:ring-4 hover:ring-violet-100 transition-all duration-300"
+            class="w-fit rounded-lg text-sm px-5 py-2 focus:outline-none h-[50px]  bg-blue-500 hover:bg-violet-600 focus:bg-violet-700 border-violet-500-violet- text-white focus:ring-4 focus:ring-violet-200 hover:ring-4 hover:ring-violet-100 transition-all duration-300"
             type="submit"
           >
             <div class="flex gap-2 items-center">Create Reciept</div>

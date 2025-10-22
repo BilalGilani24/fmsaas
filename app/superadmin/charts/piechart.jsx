@@ -1,34 +1,74 @@
 "use client";
-import React from "react";
-import { PieChart, Pie, Legend, Tooltip, ResponsiveContainer } from "recharts";
-
-const data01 = [
-  { name: "Australia", value: 400 },
-  { name: "United Kingdom", value: 300 },
-  { name: "United States", value: 300 },
-  { name: "Canada", value: 200 },
-  { name: "Malaysia", value: 278 },
-  { name: "Ireland", value: 189 },
-];
+import React, { useEffect, useState } from "react";
+import useUserStore from "@/app/store/userid";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { PieChart, Pie, Tooltip, ResponsiveContainer } from "recharts";
 
 const CustomPieChart = () => {
-  return (
-    <ResponsiveContainer width="100%" height={400}>
-      <PieChart width={400} height={400}>
-        <Pie
-          dataKey="value"
-          isAnimationActive={false}
-          data={data01}
-          cx="50%"
-          cy="40%"
-          outerRadius={90}
-          fill="#8884d8"
-          label
-        />
+  const { userId, initializeUser } = useUserStore();
 
-        <Tooltip />
-      </PieChart>
-    </ResponsiveContainer>
+  const countries = ["Australia", "United Kingdom", "United States", "Canada", "Malaysia"];
+
+  const [leads, setLeads] = useState(
+    countries.reduce((acc, country) => ({ ...acc, [country]: 0 }), {})
+  );
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchLeads = async () => {
+    try {
+      setIsLoading(true);
+      const res = await axios.post("/api/admin/enqleads", { userId });
+      const data = res.data || [];
+
+      const counts = {};
+      countries.forEach((country) => {
+        counts[country] = data.find((item) => item.country === country)?.count || 0;
+      });
+      setLeads(counts);
+    } catch (error) {
+      console.error("Error fetching leads:", error);
+      toast.error("Error getting leads");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    initializeUser();
+    if (userId) fetchLeads();
+  }, [userId]);
+
+  const chartData = countries.map((country) => ({
+    name: country,
+    value: leads[country] || 0,
+  }));
+
+  const hasData = chartData.some((item) => item.value > 0);
+
+  return (
+    <div className="w-full h-[400px] flex items-center justify-center">
+      {isLoading ? (
+        <p className="text-gray-400 text-lg">Loading...</p>
+      ) : hasData ? (
+        <ResponsiveContainer width="100%" height="100%">
+          <PieChart>
+            <Pie
+              dataKey="value"
+              data={chartData}
+              cx="50%"
+              cy="40%"
+              outerRadius={90}
+              fill="#82ca9d"
+              label
+            />
+            <Tooltip />
+          </PieChart>
+        </ResponsiveContainer>
+      ) : (
+        <p className="text-gray-400 text-lg">No data available</p>
+      )}
+    </div>
   );
 };
 

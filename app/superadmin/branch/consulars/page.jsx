@@ -51,9 +51,10 @@ const Consulars = () => {
             </select>
           </form>
         </div>
-        <div class="relative w-[940px] overflow-x-scroll border rounded-md mt-5 mb-10 ml-[270px]">
-          <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <div class="relative w-[940px] overflow-x-scroll  rounded-md mt-5 mb-10 ml-[270px]">
+          <table class="w-full text-sm text-left rtl:text-right text-white dark:text-gray-400">
+            <thead class="text-xs text-white uppercase bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl
+">
               <tr>
                 <th scope="col" class="px-6 py-3">
                   <div className="w-32"> Consular Name</div>
@@ -81,10 +82,11 @@ const Consulars = () => {
             </thead>
             {getdata.map((item, index) => (
               <tbody key={index}>
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <tr class="bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl
+ border-b dark:bg-gray-800 dark:border-gray-700">
                   <th
                     scope="row"
-                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    class="px-6 py-4 font-medium text-white whitespace-nowrap dark:text-white"
                   >
                     {item.Name}
                   </th>

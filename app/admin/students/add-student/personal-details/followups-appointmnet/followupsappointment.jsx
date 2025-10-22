@@ -80,21 +80,34 @@ const Followupsappointment = ({ formData, handleSubmit }) => {
       toast.error("Error Creating Student Enquiry");
     }
   };
+  const sendappointmentemail= async()=>{
+    try {
+      await axios.post("/api/Appointmentemail",{
+        email:formData?.Emailaddress,
+        appointmentTime: appointmentdate+getappointmenttime,
+            appoinmentremarks:getappointmentremarks
+  
+      })
+      toast.success("Appointment email send successfully")
+    } catch (error) {
+      toast.error("Error sending appointment email")
+    }
+  }
   return (
     <>
       <div className="flex dm-sans flex-col mt-[-140px] ml-32   gap-4">
-        <div className="flex flex-col  bg-white shadow-sm rounded-md h-[270px] w-[340px] border ">
+        <div className="flex flex-col  border-white/20 shadow-md rounded-2xl bg-white/10 backdrop-blur-xl  h-[270px] w-[340px] ">
           <div className="p-2 px-5">
             <label
               for="first_name"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              class="block mb-2 text-sm font-medium text-white dark:text-white"
             >
               Follow-up Date
             </label>
             <input
               type="date"
               onChange={(e) => setfollowupdate(e.target.value)}
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                      class="w-full bg-white/20 text-white border border-white/30 rounded-lg p-2 pr-10 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300"
               placeholder="John"
               required
             />
@@ -103,7 +116,7 @@ const Followupsappointment = ({ formData, handleSubmit }) => {
             <form class="max-w-[20rem] mx-auto">
               <label
                 for="time"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-sm font-medium text-white dark:text-white"
               >
                 Select Follow Time:
               </label>
@@ -137,31 +150,31 @@ const Followupsappointment = ({ formData, handleSubmit }) => {
           <div className="p-2 px-5">
             <label
               for="last_name"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              class="block mb-2 text-sm font-medium text-white dark:text-white"
             >
               Follow up Remarks
             </label>
             <input
               type="text"
               onChange={(e) => setfollowremarks(e.target.value)}
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                      class="w-full bg-white/20 text-white border border-white/30 rounded-lg p-2 pr-10 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300"
               placeholder="Doe"
               required
             />
           </div>
         </div>
-        <div className="flex bg-white flex-col shadow-sm rounded-md h-[410px] mb-10 w-[340px] border ">
+        <div className="flex  flex-col border-white/20 shadow-md rounded-2xl bg-white/10 backdrop-blur-xlrounded-md h-[315px] mb-10 w-[340px]  ">
           <div className="p-2 px-5">
             <label
               for="first_name"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              class="block mb-2 text-sm font-medium text-white dark:text-white"
             >
               Appointment Date
             </label>
             <input
               type="date"
               onChange={(e) => setappointment(e.target.value)}
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                      class="w-full bg-white/20 text-white border border-white/30 rounded-lg p-2 pr-10 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300"
               placeholder="John"
               required
             />
@@ -170,7 +183,7 @@ const Followupsappointment = ({ formData, handleSubmit }) => {
             <form class="max-w-[20rem] mx-auto">
               <label
                 for="time"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-sm font-medium text-white dark:text-white"
               >
                 Appointment Time
               </label>
@@ -204,38 +217,31 @@ const Followupsappointment = ({ formData, handleSubmit }) => {
           <div className="p-2 px-5">
             <label
               for="last_name"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              class="block mb-2 text-sm font-medium text-white dark:text-white"
             >
               Appointment Remarks
             </label>
             <input
               type="text"
               onChange={(e) => setappointmentremarks(e.target.value)}
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                      class="w-full bg-white/20 text-black border border-white/30 rounded-lg p-2 pr-10 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300"
               placeholder="bring passport"
               required
             />
 
-            <div id="input" className="relative mt-5">
-              <form class="max-w-sm mx-auto">
-                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  Assign Enquiry
-                </label>
-
-                <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                  <option>Select Consular</option>
-                  <option value="PHD">PHD</option>
-                  <option value="Under Graduate">Under Graduate</option>
-                  <option value="Post Graduate">Post Graduate</option>
-                  <option value="Language Course">Language Course</option>
-                  <option value="Foundation Course">Foundation Course</option>
-                </select>
-              </form>
-            </div>
+           
             <button
               type="button"
-              onClick={handleSubmit(createstudent)}
-              className="text-white w-full mt-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              //onClick={handleSubmit(createstudent)}
+              onClick={handleSubmit(async () => {
+    await createstudent(); 
+
+    // ✅ Run sendappointmentemail only if both date & time exist
+    if (appointmentdate && getappointmenttime) {
+      await sendappointmentemail();
+    }
+  })}
+              className="text-white w-full mt-3 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             >
               Create Student
             </button>

@@ -8,118 +8,110 @@ import Enrolldefer from "../charts/deferenrollchart";
 import axios from "axios";
 import { toast } from "react-toastify";
 import useUserStore from "@/app/store/userid";
+import Loader from "../loader";
 
 const Dashboard = () => {
-const [getdata,setdata]=useState([])
-const { userId, initializeUser } = useUserStore();
-const [getstudent,setstudent]=useState([])
-const  [getapplication,setapplication]=useState([])
-const [getvisa,setvisa]=useState([])
-  const getenqlenth= async()=>{
+  const [stats, setStats] = useState({
+    enquiry: [],
+    students: [],
+    applications: [],
+    visa: [],
+  });
+
+  const [loading, setLoading] = useState({
+    enquiry: true,
+    students: true,
+    applications: true,
+    visa: true,
+  });
+
+  const { userId, initializeUser } = useUserStore();
+
+  // Generic function to fetch stats
+  const fetchStat = async (api, key, payload = {}) => {
+    setLoading((prev) => ({ ...prev, [key]: true }));
     try {
-      const res= await axios.post("/api/admin/enqlength",{
-        userId:userId
-      })
-      setdata(res.data)
+      const res = await axios.post(api, payload);
+      setStats((prev) => ({ ...prev, [key]: res.data }));
     } catch (error) {
-      toast.error("Error getting enquiry length")
+      toast.error(`Error getting ${key} length`);
+    } finally {
+      setLoading((prev) => ({ ...prev, [key]: false }));
     }
-  }
-  const getstudentlength= async()=>{
-    try {
-      const res= await axios.post("/api/admin/studentlength",{
-        AdminId:userId
-      })
-      setstudent(res.data)
-    } catch (error) {
-      toast.error("Error getting student length")
-    }
-  }
-  useEffect(()=>{
-      initializeUser()
-      if(userId){
-    getenqlenth();
-    getstudentlength();
-    getapplicationlength();
-    getvisalength()
-      }
-    
-    },[userId])
-     const getvisalength=async()=>{
-        try {
-      const res= await axios.post("/api/admin/getvisalength",{
-        AdminId:userId
-      })
-      setvisa(res.data)
-    } catch (error) {
-      toast.error("Error getting student length")
-    }
-    }
-    const getapplicationlength=async()=>{
-        try {
-      const res= await axios.post("/api/admin/applicationlength",{
-        AdminId:userId
-      })
-      setapplication(res.data)
-    } catch (error) {
-      toast.error("Error getting student length")
-    }
-    }
+  };
+
+  useEffect(() => {
+    initializeUser();
+    if (!userId) return;
+
+    fetchStat("/api/admin/enqlength", "enquiry", { userId });
+    fetchStat("/api/admin/studentlength", "students", { AdminId: userId });
+    fetchStat("/api/admin/applicationlength", "applications", { AdminId: userId });
+    fetchStat("/api/admin/getvisalength", "visa", { AdminId: userId });
+  }, [userId]);
+
+  const statCards = [
+    { label: "Enquiry", key: "enquiry" },
+    { label: "Students", key: "students" },
+    { label: "Applications", key: "applications" },
+    { label: "Visa", key: "visa" },
+  ];
+
   return (
-    <div className="flex flex-col">
-      <div className=" flex ml-52 mt-5 justify-center items-center ">
+    <div className="relative ml-52 min-h-screen flex flex-col overflow-hidden text-white">
+      {/* Header */}
+      <div className="flex justify-center mt-6">
         <Headerpic />
       </div>
 
-      <div className="dm-sans justify-center ml-52 mt-8 items-center flex flex-row gap-5">
-        {["Enquiry", "Students", "Applications", "Visa"].map((item, index) => (
+      {/* Stat cards */}
+      <div className="flex flex-wrap cursor-default justify-center gap-8 mt-12 px-6">
+        {statCards.map(({ label, key }, index) => (
           <div
             key={index}
-            className={`rounded-2xl ${
-              index % 2 === 0 ? "bg-lamaPurple" : "bg-lamaYellow"
-            } p-4 w-60`}
+            className="rounded-2xl bg-white/10 backdrop-blur-xl  border-white/20 shadow-md p-4 w-60 text-center transition-all duration-300 hover:bg-white/15"
           >
             <div className="flex justify-between items-center">
-              <span className="text-[10px] bg-white px-2 py-1 rounded-full text-green-600">
-                2024/25
+              <span className="text-[10px] bg-white/20 px-2 py-1 rounded-full text-green-200">
+                2025
               </span>
-              <Link width={20} height={20} />
+              <Link width={20} height={20} className="text-gray-300" />
             </div>
-            <h1 className="text-2xl font-semibold my-4">
-              {index === 0 ? getdata?.length : index === 1 ? getstudent?.length : index === 2 ? getapplication?.length : getvisa?.length}
-            </h1>
-            <h2 className="capitalize text-sm font-medium text-gray-500">
-              {item}
-            </h2>
+
+            {/* Loader or value */}
+            {loading[key] ? (
+              <div className="flex justify-center my-4">
+               <Loader/>
+              </div>
+            ) : (
+              <h1 className="text-4xl font-extrabold my-4 tracking-tight">
+                {stats[key]?.length || 0}
+              </h1>
+            )}
+
+            <h2 className="capitalize text-sm font-medium text-gray-200">{label}</h2>
           </div>
         ))}
       </div>
-  <div className="flex mt-10">
-          <h1 className="text-xl ml-96">Defer & Enrolled Students (Country Wise)</h1>
-         
-        </div>
-        <div className=" mt-[-25px] ml-[1000px]">
-           <h1 className="text-center  text-xl dm-sans">
-            Country Wise Leads
+
+      {/* Charts */}
+      <div className="flex flex-col ml-10 mb-10 lg:flex-row justify-center items-start gap-5 mt-16 px-10">
+        {/* Area chart */}
+        <div className="flex flex-col  border-white/20 shadow-md rounded-2xl bg-white/10 backdrop-blur-xl p-6 w-[850px]">
+          <h1 className="text-xl font-semibold mb-4">
+            Defer & Enrolled Students (Country Wise)
           </h1>
-        </div>
-      <div className="flex ml-44 mt-5 flex-row justify-center ">
-       
-       <div className=" mt-1 flex-col gap-5 border shadow-sm rounded-lg flex justify-center items-center">
-       
-        <div className="w-[800px] px-10  ">
           <Enrolldefer />
         </div>
-      </div>
 
-        <div className="flex flex-col ml-3 mr-4  w-[360px]">
-         
-          <div className="w-full  h-[380px] border shadow-sm rounded-lg">
-            <CustomPieChart />
-          </div>
+        {/* Pie chart */}
+        <div className=" border-white/20 shadow-md rounded-2xl bg-white/10 backdrop-blur-xl p-6 w-[380px] h-[390px]">
+          <h1 className="text-xl font-semibold text-center mb-4">
+            Country Wise Leads
+          </h1>
+          <CustomPieChart />
         </div>
       </div>
-   
     </div>
   );
 };

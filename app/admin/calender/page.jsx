@@ -1,9 +1,10 @@
 "use client";
-import React, { useState, useEffect } from "react";
+
+import React, { useEffect, useState } from "react";
 import {
   ScheduleXCalendar,
-  useNextCalendarApp,
-} from "@schedule-x/react/dist/index";
+  useCalendarApp,  // useCalendarApp (default) rather than “useNextCalendarApp”, unless your version differs
+} from "@schedule-x/react";
 import {
   createViewDay,
   createViewWeek,
@@ -11,23 +12,19 @@ import {
   createViewMonthAgenda,
 } from "@schedule-x/calendar";
 import { createEventsServicePlugin } from "@schedule-x/events-service";
-import { createDragAndDropPlugin } from "@schedule-x/drag-and-drop";
-
+import "temporal-polyfill/global"; // **Add this import** (if you haven’t)  
 import "@schedule-x/theme-default/dist/index.css";
-import Calenderpic from "./calenderpic";
+
 import useUserStore from "@/app/store/userid";
-import { toast } from "react-toastify";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 function CalendarApp() {
   const [events, setEvents] = useState([]);
   const { userId, initializeUser } = useUserStore();
 
-  // Create events service plugin and store it so we can access methods like setAll later
-  const eventsServicePlugin = createEventsServicePlugin();
-  const plugins = [eventsServicePlugin, createDragAndDropPlugin()];
-
-  const calendar = useNextCalendarApp(
+  const eventsService = createEventsServicePlugin();
+  const calendar = useCalendarApp(
     {
       views: [
         createViewDay(),
@@ -35,30 +32,21 @@ function CalendarApp() {
         createViewMonthGrid(),
         createViewMonthAgenda(),
       ],
-      events: [], // Start empty, populate manually
+      events: [],  // initial empty
       callbacks: {
-        onEventClick: (event) => {
+        onEventClick: (ev) => {
           toast.info(
-            `📌 ${event.title}\n📝 ${event.description}\n📋 Remarks: ${event.remarks}`,
-            {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            }
+            `📌 ${ev.title}\n📝 ${ev.description}\n📋 Remarks: ${ev.remarks}`,
+            { position: "top-right", autoClose: 5000 }
           );
         },
       },
     },
-    plugins
+    [eventsService]
   );
 
   const formatToISO = (dateStr, timeStr) => {
-    const iso = new Date(`${dateStr}T${timeStr}`).toISOString().slice(0, 16);
-    return iso;
+    return new Date(`${dateStr}T${timeStr}`).toISOString().slice(0, 16);
   };
 
   const addOneHourISO = (dateStr, timeStr) => {
@@ -71,14 +59,12 @@ function CalendarApp() {
     try {
       const res = await axios.post("/api/admin/getadminenq", { userId });
       const data = res.data || [];
-
-      const formattedEvents = [];
-
-      data.forEach((item, index) => {
-        // Appointment Event
+      const evs = [];
+console.log(data)
+      data.forEach((item, idx) => {
         if (item.Appointmentdate && item.Appointmenttime) {
-          formattedEvents.push({
-            id: `appointment-${index}`,
+          evs.push({
+            id: `appointment-${idx}`,
             title: `Appointment - ${item.FirstName} ${item.LastName}`,
             start: formatToISO(item.Appointmentdate, item.Appointmenttime),
             end: addOneHourISO(item.Appointmentdate, item.Appointmenttime),
@@ -86,11 +72,9 @@ function CalendarApp() {
             remarks: item.Appointmentremarks || "",
           });
         }
-
-        // Follow-up Event
         if (item.Followupdate && item.Followuptime) {
-          formattedEvents.push({
-            id: `followup-${index}`,
+          evs.push({
+            id: `followup-${idx}`,
             title: `Follow-up - ${item.FirstName} ${item.LastName}`,
             start: formatToISO(item.Followupdate, item.Followuptime),
             end: addOneHourISO(item.Followupdate, item.Followuptime),
@@ -100,40 +84,35 @@ function CalendarApp() {
         }
       });
 
-      setEvents(formattedEvents); // Store in local state
+      setEvents(evs);
     } catch (err) {
-      console.error("Error fetching enquiries:", err);
+      console.error("Error fetching:", err);
       toast.error("Failed to fetch calendar data.");
     }
   };
 
-  // Initialize user
+  // initialize user
   useEffect(() => {
     initializeUser();
   }, []);
 
-  // Fetch data when userId is available
+  // fetch when userId ready
   useEffect(() => {
     if (userId) {
       fetchEnquiries();
     }
   }, [userId]);
 
-  // Update calendar plugin when events are fetched
+  // update plugin when events change
   useEffect(() => {
-    if (events.length > 0 && eventsServicePlugin?.calendarEvents?.setAll) {
-      eventsServicePlugin.calendarEvents.setAll(events);
+    if (events && eventsService && eventsService.calendarEvents?.setAll) {
+      eventsService.calendarEvents.setAll(events);
     }
   }, [events]);
 
   return (
-    <div className="flex flex-col">
-      <div>
-        <Calenderpic />
-      </div>
-      <div className="flex justify-center items-center w-[1020px] ml-52 mt-5 mb-5">
-        <ScheduleXCalendar calendarApp={calendar} />
-      </div>
+    <div className="calendar-wrapper ml-56" style={{ width: "100%", height: "700px" }}>
+      <ScheduleXCalendar calendarApp={calendar} />
     </div>
   );
 }

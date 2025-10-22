@@ -48,7 +48,8 @@ const Createconsulars = () => {
   };
 
   return (
-    <div class="bg-white p-6 ml-[270px] border rounded-lg mt-10 shadow-sm">
+    <div class="bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl
+ p-6 ml-[270px]  rounded-lg mt-10 ">
       <div class="flex flex-wrap gap-5 items-center w-full max-md:max-w-full mb-10">
         <div class="flex flex-wrap flex-1 shrink gap-5 items-center self-stretch my-auto basis-0 min-w-[240px] max-md:max-w-full">
           <div class="flex relative flex-col justify-center self-stretch bg-gray-100 h-[70px] min-h-[70px] rounded-[16px] overflow-hidden w-[70px]">
@@ -62,7 +63,7 @@ const Createconsulars = () => {
             </div>
           </div>
           <div class="flex flex-col self-stretch my-auto min-w-[240px]">
-            <div class="text-base text-gray-800">Create Consulars</div>
+            <div class="text-base text-white">Create Consulars</div>
             <div class="mt-2 text-sm text-red-500">
               *Fill the information correctly*
             </div>
@@ -75,14 +76,14 @@ const Createconsulars = () => {
           <form class="max-w-sm mr-12 mx-auto">
             <label
               for="countries"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              class="block mb-2 text-sm font-medium text-white dark:text-white"
             >
               Select Branch
             </label>
             <select
               id="countries"
               onChange={(e) => setbranch(e.target.value)}
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[430px] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="bg-gray-50 border border-gray-300 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[430px] p-2.5 bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2  transition placeholder-gray-300"
             >
               <option>Choose Branch</option>
               {branches.map((item, index) => (
@@ -97,7 +98,7 @@ const Createconsulars = () => {
         <div id="input" class="relative">
           <label
             for="first_name"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            class="block mb-2 text-sm font-medium text-white dark:text-white"
           >
             First name
           </label>
@@ -106,7 +107,7 @@ const Createconsulars = () => {
             value={getname}
             onChange={(e) => setname(e.target.value)}
             id="first_name"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="bg-gray-50 border border-gray-300 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[430px] p-2.5 bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2  transition placeholder-gray-300"
             placeholder="Fm"
             required
           />
@@ -114,7 +115,7 @@ const Createconsulars = () => {
         <div id="input" class="relative">
           <label
             for="first_name"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            class="block mb-2 text-sm font-medium text-white dark:text-white"
           >
             Mobile Number
           </label>
@@ -123,7 +124,7 @@ const Createconsulars = () => {
             value={getmobile}
             onChange={(e) => setmobile(e.target.value)}
             id="first_name"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="bg-gray-50 border border-gray-300 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[430px] p-2.5 bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2  transition placeholder-gray-300"
             placeholder="0333-3333333"
             required
           />
@@ -131,7 +132,7 @@ const Createconsulars = () => {
         <div id="input" class="relative">
           <label
             for="first_name"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            class="block mb-2 text-sm font-medium text-white dark:text-white"
           >
             Email
           </label>
@@ -140,7 +141,7 @@ const Createconsulars = () => {
             value={getemail}
             onChange={(e) => setemail(e.target.value)}
             id="first_name"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="bg-gray-50 border border-gray-300 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[430px] p-2.5 bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2  transition placeholder-gray-300"
             placeholder="fm@edu.com"
             required
           />
@@ -149,7 +150,7 @@ const Createconsulars = () => {
         <div id="input" class="relative">
           <label
             for="first_name"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            class="block mb-2 text-sm font-medium text-white dark:text-white"
           >
             Create Password
           </label>
@@ -158,7 +159,7 @@ const Createconsulars = () => {
             value={getpassword}
             onChange={(e) => setpassword(e.target.value)}
             id="first_name"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="bg-gray-50 border border-gray-300 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[430px] p-2.5 bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2  transition placeholder-gray-300"
             placeholder="#123B24@"
             required
           />
@@ -168,7 +169,7 @@ const Createconsulars = () => {
       <div class="sm:flex sm:flex-row-reverse flex gap-4">
         <button
           onClick={() => createconsular()}
-          class="w-fit rounded-lg text-sm px-5 py-2 focus:outline-none h-[50px] border bg-blue-500 hover:bg-violet-600 focus:bg-violet-700 border-violet-500-violet- text-white focus:ring-4 focus:ring-violet-200 hover:ring-4 hover:ring-violet-100 transition-all duration-300"
+          class="w-fit rounded-lg text-sm px-5 py-2 focus:outline-none h-[50px]  bg-blue-500 hover:bg-violet-600 focus:bg-violet-700 border-violet-500-violet- text-white focus:ring-4 focus:ring-violet-200 hover:ring-4 hover:ring-violet-100 transition-all duration-300"
           type="button"
         >
           <div class="flex gap-2 items-center">

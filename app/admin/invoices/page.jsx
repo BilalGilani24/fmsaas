@@ -16,6 +16,7 @@ import {
   StyleSheet,
   Document,
 } from "@react-pdf/renderer";
+import Loader from "../loader";
 const styles = StyleSheet.create({
   page: {
     flexDirection: "row",
@@ -33,6 +34,8 @@ const styles = StyleSheet.create({
 });
 const Invoices = () => {
  const [viewingDocs, setViewingDocs] = useState([]);
+  // ⭐ ADDED: State for the search query
+  const [searchQuery, setSearchQuery] = useState("");
 
 const PDFDocument = ({ docImages }) => (
   <Document>
@@ -62,13 +65,16 @@ const [getid,setid]=useState()
       initializeUser();
       fetchBranchConsulars();
     }, [initializeUser, userId]);
+       const [isloading,setloading]=useState(false)
 
     const getinvoices=async()=>{
       try {
+        setloading(false)
         const res = await axios.post("/api/admin/getconsultancyinvoice",{
           userId:userId
         })
 setdata(res.data)
+setloading(true)
       } catch (error) {
         toast.error("Error fetching invoices")
       }
@@ -102,6 +108,15 @@ setdata(res.data)
           toast.error("Error uploading invoice")
         }
       }
+
+      // ⭐ ADDED: Filter logic to apply the search
+      const filteredInvoices = getdata.filter(invoice =>
+        // Search by Name, Email, or Phone Number (case-insensitive)
+        invoice.Name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        invoice.Email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        invoice.Phonenumber.includes(searchQuery)
+      );
+
   return (
     <>
     <div className="flex flex-col dm-sans">
@@ -109,7 +124,8 @@ setdata(res.data)
         <Invoicepic />
       </div>
       <div className="flex flex-row justify-end mt-10">
-        <div className="flex w-auto p-3 h-11 mr-[385px] border  rounded-lg gap-5 items-center justify-center bg-white shadow-sm flex-row">
+        <div className="flex w-auto p-3 h-11 mr-[385px]   rounded-lg gap-5 items-center justify-center bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl
+ flex-row">
           <div className="flex text-sm flex-row cursor-pointer hover:text-blue-600 gap-2">
             Send Mail
             <span>
@@ -121,17 +137,18 @@ setdata(res.data)
             <MessageCircle className="text-blue-500" size={20} />
           </div>
         </div>
-        <form class="w-96">
+        {/* ⭐ UPDATED: Added onChange handler for the search input */}
+        <form className="w-96">
           <label
-            for="default-search"
-            class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+            htmlFor="default-search"
+            className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
           >
             Search
           </label>
-          <div class="relative">
-            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+          <div className="relative">
+            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
               <svg
-                class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                className="w-4 h-4 text-gray-500 dark:text-gray-400"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -139,9 +156,9 @@ setdata(res.data)
               >
                 <path
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
                 />
               </svg>
@@ -149,71 +166,90 @@ setdata(res.data)
             <input
               type="search"
               id="default-search"
-              class="block w-full p-2.5 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="block w-full p-2.5 ps-10 text-sm text-white border border-gray-300 rounded-lg bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300"
               placeholder="Search Invoices"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               required
             />
-            <button
-              type="submit"
-              class="text-white absolute end-2 bottom-1.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              Search
-            </button>
+            {/* ⭐ UPDATED: Added a button to clear the search */}
+            {searchQuery && (
+               <button
+                  type="button"
+                  onClick={() => setSearchQuery("")}
+                  className="text-white absolute end-2 bottom-1.5 bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+              >
+                  Clear
+              </button>
+            )}
+            {!searchQuery && (
+              <button
+                type="submit"
+                className="text-white absolute end-2 bottom-1.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Search
+              </button>
+            )}
           </div>
         </form>
       </div>
 
-      <div className="w-[1100px] border rounded ml-56 mb-10 mt-3 overflow-x-auto">
-        <div class="relative w-full ">
-          <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs  text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <div className="w-[1100px]  rounded ml-56 mb-10 mt-3 overflow-x-auto">
+        <div className="relative w-full ">
+          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead className="text-xs  text-white uppercase bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl
+">
               <tr>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   <div className="w-36">Reciept Creation Date</div>
                 </th>
 
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   <div className="w-80">Name</div>
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   <div className="w-36">Email</div>
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   <div className="w-36">Mobile</div>
                 </th>
 
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   <div className="w-36">Status</div>
                 </th>
              
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   <div className="w-44">Consultancy Charges</div>
                 </th>
 
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   <div className="w-36">Amount Recieved</div>
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   <div className="w-36">Amount Due</div>
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   <div className="w-44">View Receipt</div>
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                   <div className="w-44">Action</div>
                 </th>
               </tr>
             </thead>
+            {!isloading?(<div className="p-5">  <Loader/></div>):(
             <tbody>
-               {getdata.map((invoice, index) => (
-                invoice.id == getid ?(
+             
+               {/* ⭐ UPDATED: Using filteredInvoices instead of getdata */}
+               {filteredInvoices.map((invoice, index) => (
+                invoice.id === getid ?(
     <tr
       key={index}
-      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+      className=" border-b text-white bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl
+"
     >
       <th
         scope="row"
-        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+        className="px-6 py-4 font-medium text-white whitespace-nowrap dark:text-white"
       >
         {new Date(invoice.createdAt).toLocaleString("en-GB", {
           day: "2-digit",
@@ -226,16 +262,14 @@ setdata(res.data)
       </th>
       <td className="px-6 py-4">
         <div className="flex flex-row gap-2">
-          <div className="mt-3">{invoice.Name}</div>
-          <div className="flex flex-row bg-lamaPurple cursor-pointer h-auto p-2 text-black rounded-lg gap-1">
-            History <History />
-          </div>
+          <div className="mt-3 text-white">{invoice.Name}</div>
+          
         </div>
       </td>
       <td className="px-6 py-4">
-        <div className="w-36">{invoice.Email}</div>
+        <div className="w-36 text-white">{invoice.Email}</div>
       </td>
-      <td className="px-6 py-4">{invoice.Phonenumber}</td>
+      <td className="px-6 py-4 text-white">{invoice.Phonenumber}</td>
       <td className="px-6 py-4">
         <form className="w-32">
           <div
@@ -246,12 +280,13 @@ setdata(res.data)
           </div>
         </form>
       </td>
-      <td className="px-6 py-4">40000</td>
-       {Number(invoice.Consultancyfee) + Number(invoice.Secoundpayment)}
-      <td className="px-6 py-4">{invoice.Consultancyfee - invoice.Secoundpayment }</td>
+      <td className="px-6 py-4 text-white">40000</td>
+      <td className="px-6 py-4 text-white">   {Number(invoice.Consultancyfee) + Number(invoice.Secoundpayment)}</td>
+    
+      <td className="px-6 py-4 mt-10">{invoice.Consultancyfee - invoice.Secoundpayment }</td>
         <td className="px-6 py-4">
         
-        <Eye  onClick={() => setViewingDoc(invoice.Docs)} className="ml-5 hover:text-blue-500 cursor-pointer" />
+        <Eye  onClick={() => setViewingDocs(invoice.Docs)} className="ml-5 hover:text-blue-500 cursor-pointer" />
       </td>
            <td className="px-6 py-4">
       <CldUploadWidget
@@ -321,11 +356,12 @@ setdata(res.data)
   ):
   <tr
       key={index}
-      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+      className="bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl text-white
+"
     >
       <th
         scope="row"
-        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+        className="px-6 py-4 font-medium text-white whitespace-nowrap dark:text-white"
       >
         {new Date(invoice.createdAt).toLocaleString("en-GB", {
           day: "2-digit",
@@ -339,9 +375,7 @@ setdata(res.data)
       <td className="px-6 py-4">
         <div className="flex flex-row gap-2">
           <div className="mt-3">{invoice.Name}</div>
-          <div className="flex flex-row bg-lamaPurple cursor-pointer h-auto p-2 text-black rounded-lg gap-1">
-            History <History />
-          </div>
+         
         </div>
       </td>
       <td className="px-6 py-4">
@@ -352,7 +386,7 @@ setdata(res.data)
         <form className="w-32">
           <div
 
-            className="bg-gray-50 border-lamaYellow text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+            className="text-white"
           >
           <p>{invoice.Consultancyfee && invoice.Secoundpayment !== "" ? "Paid": "Half-Paid"}</p>
           </div>
@@ -376,7 +410,7 @@ setdata(res.data)
     </tr>))}
              
             
-            </tbody>
+            </tbody>)}
           </table>
         </div>
       </div>

@@ -5,10 +5,12 @@ import { Eye, Mail, MessageCircle, Pen, UserPlus } from "lucide-react";
 import useUserStore from "@/app/store/userid";
 import axios from "axios";
 import { toast } from "react-toastify";
+import Loader from "../../loader";
 
 const Defer = () => {
     const { userId, initializeUser } = useUserStore();
     const [getdata,setdata]=useState([])
+    const [isloading,setloading]=useState(false)
     useEffect(()=>{
       initializeUser()
       if(userId){
@@ -17,10 +19,12 @@ const Defer = () => {
     },[userId])
     const getdefer=async()=>{
       try {
+        setloading(false)
         const res=await axios.post("/api/admin/getdefer",{
           AdminId:userId
         })
         setdata(res.data)
+        setloading(true)
       } catch (error) {
         toast.error("Error fetching the defer students")
       }
@@ -31,7 +35,7 @@ const Defer = () => {
         <Deferpic />
       </div>
       <div className="flex flex-row justify-end mt-10">
-        <div className="flex w-auto p-3 h-11 mr-[385px]  border  rounded-lg gap-5 items-center justify-center bg-white shadow-sm flex-row">
+        <div className="flex w-auto p-3 h-11 mr-[385px]    rounded-lg gap-5 items-center justify-center  bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl flex-row">
           <div className="flex text-sm flex-row cursor-pointer hover:text-blue-600 gap-2">
             Send Mail
             <span>
@@ -71,7 +75,7 @@ const Defer = () => {
             <input
               type="search"
               id="default-search"
-              class="block w-full p-2.5 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="block w-full rounded-lg  p-2.5 ps-10 bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl"
               placeholder="Search Student"
               required
             />
@@ -85,10 +89,10 @@ const Defer = () => {
         </form>
       </div>
 
-      <div className="w-[1100px] border rounded ml-56 mb-10 mt-3 overflow-x-auto">
+      <div className="w-[1100px]  rounded ml-56 mb-10 mt-3 overflow-x-auto">
         <div class="relative w-full ">
           <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs  text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <thead class="text-xs text-white bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl">
               <tr>
               
 
@@ -134,10 +138,10 @@ const Defer = () => {
                 </th>
               </tr>
             </thead>
-           
+           {!isloading?(<div className="p-5">  <Loader/></div>):(
              <tbody>
   {getdata.map((item, index) => (
-    <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+    <tr key={index} className="bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl text-white">
      
       <td className="px-6 py-4">
         <div className="w-48">{item.Name}</div>
@@ -148,7 +152,7 @@ const Defer = () => {
       <td className="px-6 py-4">{item.Mobilenumber}</td>
       <td className="px-6 py-4">{item.Deferintake}</td>
       <td>
-        <div className="p-2 text-center text-black rounded-lg bg-red-500 cursor-pointer">
+        <div className="p-2 text-center text-white rounded-lg bg-red-500 cursor-pointer">
           {item.Deferreason}
         </div>
       </td>
@@ -164,7 +168,7 @@ const Defer = () => {
     </tr>
   ))}
 </tbody>
-
+           )}
            
           </table>
         </div>

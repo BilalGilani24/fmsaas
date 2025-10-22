@@ -17,8 +17,9 @@ const Proficencydetail = () => {
     <>
 
       <div className="mb-5 mt-5 ml-20">
-        <ul className="items-center dm-sans w-[987px] text-center text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-          {["ILETS", "PTE", "TOEFL", "GMAT", "Duolingo", "SAT", "GRE"].map(
+        <ul className="items-center dm-sans w-[987px] text-center text-sm font-medium text-white bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl
+ border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+          {["ILETS", "PTE", "TOEFL", "Proficency Test", "Duolingo", "SAT", "Other"].map(
             (testName) => (
               <li
                 key={testName}
@@ -36,7 +37,7 @@ const Proficencydetail = () => {
                   />
                   <label
                     htmlFor={`horizontal-list-radio-${testName}`}
-                    className="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    className="w-full py-3 ms-2 text-sm font-medium text-white dark:text-gray-300"
                   >
                     {testName}
                   </label>

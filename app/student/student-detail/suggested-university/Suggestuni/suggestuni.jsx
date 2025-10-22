@@ -83,7 +83,8 @@ const editsuggesteduniversity = async (id) => {
   return (
     <>
     <div className="flex dm-sans justify-center mb-5  mt-5 px-4">
-      <div className="w-[1000px] p-6 border shadow-sm rounded-md bg-white dark:bg-gray-800">
+      <div className="w-[1000px] p-6 rounded-md bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl
+ dark:bg-gray-800">
         {/* Header */}
         <div className="flex flex-wrap gap-5 items-center w-full mb-8">
           <div className="flex flex-wrap flex-1 gap-5 items-center min-w-[240px]">
@@ -91,7 +92,7 @@ const editsuggesteduniversity = async (id) => {
               <Image src="/university.jpg" width={100} height={100} alt="University" />
             </div>
             <div className="flex flex-col min-w-[240px]">
-              <div className="text-base text-gray-800">Suggested University</div>
+              <div className="text-base text-white">Suggested University</div>
               <div className="mt-2 text-sm text-red-500">
                 *Add university suggestion one by one*
               </div>
@@ -107,7 +108,7 @@ const editsuggesteduniversity = async (id) => {
 
             {/* University Name */}
             <div className="flex flex-col">
-              <label htmlFor="university" className="mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              <label htmlFor="university" className="mb-2 text-sm font-medium text-white dark:text-white">
                 University name
               </label>
               <input
@@ -115,34 +116,34 @@ const editsuggesteduniversity = async (id) => {
                 id="university"
                 placeholder="Cambridge University"
                 {...register("Universityname", { required: true })}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 dark:bg-gray-700 dark:text-white"
+                                className="bg-gray-50 border-gray-300 text-white text-sm rounded-lg bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 block w-full p-2.5 "
               />
               {errors.Universityname && <span className="text-red-500 text-xs mt-1">Required</span>}
             </div>
 
             {/* Intake */}
             <div className="flex flex-col">
-              <label htmlFor="intake" className="mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              <label htmlFor="intake" className="mb-2 text-sm font-medium text-white dark:text-white">
                 Select Intake
               </label>
               <input
                 type="month"
                 id="intake"
                 {...register("Intake", { required: true })}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 dark:bg-gray-700 dark:text-white"
+                                className="bg-gray-50 border-gray-300 text-white text-sm rounded-lg bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 block w-full p-2.5 "
               />
               {errors.Intake && <span className="text-red-500 text-xs mt-1">Required</span>}
             </div>
 
             {/* Country */}
             <div className="flex flex-col">
-              <label htmlFor="country" className="mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              <label htmlFor="country" className="mb-2 text-sm font-medium text-white dark:text-white">
                 Select Country
               </label>
               <select
                 id="country"
                 {...register("Country", { required: true })}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-2.5 dark:bg-gray-700 dark:text-white"
+                                className="bg-gray-50 border-gray-300 text-black text-sm rounded-lg bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 block w-full p-2.5 "
               >
                 <option value="">Choose a country</option>
                 <option value="United States">United States</option>
@@ -171,9 +172,11 @@ const editsuggesteduniversity = async (id) => {
     </div>
       {/* Table Display */}
       {userId?.length > 1 && (
-        <div className="relative w-[1020px]  mt-5 mb-5 overflow-scroll border bg-white overflow-x-auto shadow-sm sm:rounded-lg">
-          <table className="text-sm text-left text-gray-500 dark:text-gray-400 w-full">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <div className="relative w-[1020px] ml-2  mt-5 mb-5 overflow-hidden bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl
+ text-white overflow-x-auto sm:rounded-lg">
+          <table className="text-sm text-left text-white dark:text-gray-400 w-full">
+            <thead className="text-xs text-white uppercase bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl
+ dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th className="px-6 py-3">#</th>
                 <th className="px-6 py-3 min-w-[150px]">University Name</th>

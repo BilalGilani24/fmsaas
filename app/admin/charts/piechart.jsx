@@ -1,68 +1,74 @@
 "use client";
+import React, { useEffect, useState } from "react";
 import useUserStore from "@/app/store/userid";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { PieChart, Pie, Legend, Tooltip, ResponsiveContainer } from "recharts";
-
+import { PieChart, Pie, Tooltip, ResponsiveContainer } from "recharts";
 
 const CustomPieChart = () => {
-   const [ukEnroll, setUkEnroll] = useState(0);
-    const [ausEnroll, setAusEnroll] = useState(0);
-    const [canEnroll, setCanEnroll] = useState(0);
-    const [malaysiaEnroll, setMalaysiaEnroll] = useState(0);
-    const [usEnroll, setUsEnroll] = useState(0);
-   const { userId, initializeUser } = useUserStore();
-   const data01 = [
-  { name: "Australia", value: ausEnroll || 0 },
-  { name: "United Kingdom", value: ukEnroll || 0 },
-  { name: "United States", value: usEnroll || 0 },
-  { name: "Canada", value: canEnroll || 0},
-  { name: "Malaysia", value: malaysiaEnroll || 0},
- 
-];
+  const { userId, initializeUser } = useUserStore();
 
-     const getenqleads = async () => {
-       try {
-         const res = await axios.post("/api/admin/enqleads", {
-           userId: userId,
-         });
-   
-         const data = res.data || [];
-   
-         setUkEnroll(data.find((item) => item.country === "United Kingdom")?.count || 0);
-         setAusEnroll(data.find((item) => item.country === "Australia")?.count || 0);
-         setCanEnroll(data.find((item) => item.country === "Canada")?.count || 0);
-         setMalaysiaEnroll(data.find((item) => item.country === "Malaysia")?.count || 0);
-         setUsEnroll(data.find((item) => item.country === "United States")?.count || 0);
-       } catch (error) {
-         console.error("Error fetching leads length:", error);
-         toast.error("Error getting leads");
-       }
-     };
-    useEffect(() => {
-       initializeUser();
-       if (userId) {
-        getenqleads()
-       }
-     }, [userId]);
+  const countries = ["Australia", "United Kingdom", "United States", "Canada", "Malaysia"];
+
+  const [leads, setLeads] = useState(
+    countries.reduce((acc, country) => ({ ...acc, [country]: 0 }), {})
+  );
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchLeads = async () => {
+    try {
+      setIsLoading(true);
+      const res = await axios.post("/api/admin/enqleads", { userId });
+      const data = res.data || [];
+
+      const counts = {};
+      countries.forEach((country) => {
+        counts[country] = data.find((item) => item.country === country)?.count || 0;
+      });
+      setLeads(counts);
+    } catch (error) {
+      console.error("Error fetching leads:", error);
+      toast.error("Error getting leads");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    initializeUser();
+    if (userId) fetchLeads();
+  }, [userId]);
+
+  const chartData = countries.map((country) => ({
+    name: country,
+    value: leads[country] || 0,
+  }));
+
+  const hasData = chartData.some((item) => item.value > 0);
+
   return (
-    <ResponsiveContainer width="100%" height={400}>
-      <PieChart width={400} height={400}>
-        <Pie
-          dataKey="value"
-          isAnimationActive={false}
-          data={data01}
-          cx="50%"
-          cy="40%"
-          outerRadius={90}
-          fill="#8884d8"
-          label
-        />
-
-        <Tooltip />
-      </PieChart>
-    </ResponsiveContainer>
+    <div className="w-full h-[400px] flex items-center justify-center">
+      {isLoading ? (
+        <p className="text-gray-400 text-lg">Loading...</p>
+      ) : hasData ? (
+        <ResponsiveContainer width="100%" height="100%">
+          <PieChart>
+            <Pie
+              dataKey="value"
+              data={chartData}
+              cx="50%"
+              cy="40%"
+              outerRadius={90}
+              fill="#82ca9d"
+              label
+            />
+            <Tooltip />
+          </PieChart>
+        </ResponsiveContainer>
+      ) : (
+        <p className="text-gray-400 text-lg">No data available</p>
+      )}
+    </div>
   );
 };
 

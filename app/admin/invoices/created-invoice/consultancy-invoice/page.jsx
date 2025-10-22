@@ -116,7 +116,7 @@ const updatesecoundpayment=async(id)=>{
   
   return (
     <div>
-      <div class="bg-white p-8 ml-52 border mt-5 rounded-lg shadow-md">
+      <div class="bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl p-8 ml-52 border mt-5 rounded-lg">
         <div class="flex flex-wrap gap-5 items-center w-full max-md:max-w-full mb-10">
           <div class="flex flex-wrap flex-1 shrink gap-5 items-center self-stretch my-auto basis-0 min-w-[240px] max-md:max-w-full">
             <div class="flex relative flex-col justify-center self-stretch bg-gray-100 h-[70px] min-h-[70px] rounded-[16px] overflow-hidden w-[70px]">
@@ -125,7 +125,7 @@ const updatesecoundpayment=async(id)=>{
               </div>
             </div>
             <div class="flex flex-col self-stretch my-auto min-w-[240px]">
-              <div class="text-base text-gray-800">Consultancy Invoice</div>
+              <div class="text-base text-white">Consultancy Invoice</div>
               <div class="mt-2 text-sm text-red-500">
                 PLEASE CHOOSE CORRECT OPTIONS AND AMOUNT
               </div>
@@ -136,12 +136,12 @@ const updatesecoundpayment=async(id)=>{
 
 <form >          <div class="grid grid-cols-2 gap-6 mb-10">
             <div id="input" class="relative">
-              <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              <label class="block mb-2 text-sm font-medium text-white dark:text-white">
                 Select Name
               </label>
               <select
                 {...register("name")}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                className="bg-white/20 text-black border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 text-sm rounded-lg block w-full p-2.5"
               >
                 <option value="">Choose Name</option>
                 {getstudent?.map((student, index) => (
@@ -153,12 +153,12 @@ const updatesecoundpayment=async(id)=>{
             </div>
 
             <div id="input" class="relative">
-              <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              <label class="block mb-2 text-sm font-medium text-white dark:text-white">
                 Select Branch
               </label>
               <select
                 {...register("branch")}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                className="bg-white/20 text-black border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 text-sm rounded-lg block w-full p-2.5"
               >
                 <option value="">Choose Name</option>
                 <option value={singlebranchname}>{singlebranchname}</option>
@@ -166,12 +166,12 @@ const updatesecoundpayment=async(id)=>{
             </div>
 
             <div id="input" class="relative">
-              <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              <label class="block mb-2 text-sm font-medium text-white dark:text-white">
                 Select Phone Number
               </label>
               <select
                 {...register("phone")}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                className="bg-white/20 text-black border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 text-sm rounded-lg block w-full p-2.5"
               >
                 <option value="">Choose Phone Number</option>
                 {getstudent?.map((student, index) => (
@@ -183,12 +183,12 @@ const updatesecoundpayment=async(id)=>{
             </div>
 
             <div id="input" class="relative">
-              <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              <label class="block mb-2 text-sm font-medium text-white dark:text-white">
                 Select an Email
               </label>
               <select
                 {...register("email")}
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                className="bg-white/20 text-black border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 text-sm rounded-lg block w-full p-2.5"
               >
                 <option value="">Choose Email</option>
                 {getstudent?.map((student, index) => (
@@ -200,12 +200,12 @@ const updatesecoundpayment=async(id)=>{
             </div>
 
             <div id="input" class="relative">
-              <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              <label class="block mb-2 text-sm font-medium text-white dark:text-white">
                 Select Payment Method
               </label>
               <select
                 {...register("paymentMethod")}
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                className="bg-white/20 text-black border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 text-sm rounded-lg block w-full p-2.5"
               >
                 <option value="">Choose Payment Method</option>
                 <option value="Cash">Cash</option>
@@ -218,12 +218,12 @@ const updatesecoundpayment=async(id)=>{
             </div>
 
             <div id="input" class="relative">
-              <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              <label class="block mb-2 text-sm font-medium text-white dark:text-white">
                 Select Payment Status
               </label>
               <select
                 {...register("paymentStatus")}
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                className="bg-white/20 text-black border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 text-sm rounded-lg block w-full p-2.5"
               >
                 <option value="">Choose Payment Status</option>
                 <option value="Paid">Paid</option>
@@ -232,12 +232,12 @@ const updatesecoundpayment=async(id)=>{
             </div>
 
             <div id="input" class="relative">
-              <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              <label class="block mb-2 text-sm font-medium text-white dark:text-white">
                 Select Country
               </label>
               <select
                 {...register("country")}
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                className="bg-white/20 text-black border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 text-sm rounded-lg block w-full p-2.5"
               >
                 <option value="">Choose Country</option>
                 <option value="United States">USA</option>
@@ -248,25 +248,25 @@ const updatesecoundpayment=async(id)=>{
             </div>
 
             <div id="input" class="relative">
-              <label class="block mb-2 ml-2 text-sm font-medium text-gray-900 dark:text-white">
+              <label class="block mb-2 ml-2 text-sm font-medium text-white dark:text-white">
                 Enter University Name
               </label>
               <input
                 type="text"
                 {...register("university")}
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-96 ml-2 p-2.5"
+                className="bg-white/20 text-black border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 text-sm rounded-lg block w-full p-2.5"
                 placeholder="Oxford University"
               />
             </div>
 
             <div id="input" class="relative">
-              <label class="block mb-2 ml-2 text-sm font-medium text-gray-900 dark:text-white">
+              <label class="block mb-2 ml-2 text-sm font-medium text-white dark:text-white">
                 Enter Consultancy Fee Amount
               </label>
               <input
                 type="text"
                 {...register("fee")}
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-96 ml-2 p-2.5"
+                className="bg-white/20 text-black border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 text-sm rounded-lg block w-full p-2.5"
                 placeholder="20000"
               />
             </div>

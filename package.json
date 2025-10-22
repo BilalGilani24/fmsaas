@@ -25,13 +25,16 @@
     "next": "14.2.15",
     "next-auth": "^4.24.8",
     "next-cloudinary": "^6.16.0",
+    "nodemailer": "^6.10.1",
     "react": "^18",
     "react-confetti": "^6.1.0",
     "react-confetti-explosion": "^2.1.2",
     "react-dom": "^18",
     "react-hook-form": "^7.54.0",
+    "react-select": "^5.10.2",
     "react-toastify": "^10.0.6",
     "recharts": "^2.13.0",
+    "temporal-polyfill": "^0.3.0",
     "zustand": "^5.0.1"
   },
   "devDependencies": {

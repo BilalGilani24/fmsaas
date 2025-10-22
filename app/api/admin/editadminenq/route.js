@@ -21,6 +21,7 @@ export async function PUT(req, res) {
       Intrestedcourse,
       Enquirystatus,
       Appointmentremarks,
+      Address
     } = body;
 
     const updateenquiries = await prisma.enquiry.update({
@@ -42,6 +43,7 @@ export async function PUT(req, res) {
         Intrestedcourse,
         Enquirystatus,
         Appointmentremarks,
+        Address
       },
     });
 

@@ -88,7 +88,7 @@ const Createbranch = () => {
             value={branchname}
             onChange={(e) => setbranchname(e.target.value)}
             id="default-search"
-            class="block w-[400px] p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            class="block w-[400px] p-4 ps-10 text-sm text-gray-900   rounded-lg bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300"
             placeholder="Islamabad,Lahore,Karachi"
           />
           <button
@@ -103,8 +103,10 @@ const Createbranch = () => {
       {fetchloading ? (
         <div class="grid grid-cols-1 xl:grid-cols-2 gap-x-72 gap-y-10  mt-5 px-2 py-3  ">
           {fetchbranch.map((item, index) => (
-            <div key={index} class="w-32 h-24 bg-gray-300 rounded-xl">
-              <div class="absolute border flex w-auto h-24 overflow-hidden bg-white shadow-sm max-w-96 rounded-xl">
+            <div key={index} class="w-32 h-24  shadow-xl
+ rounded-xl">
+              <div class="absolute  flex w-auto h-24 overflow-hidden bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 
+ shadow-sm max-w-96 rounded-xl">
                 <svg xmlns="http://www.w3.org/2000/svg" height="96" width="16">
                   <path
                     stroke-linecap="round"
@@ -135,7 +137,8 @@ const Createbranch = () => {
                       value={updatedname}
                       onChange={(e) => setupdatedname(e.target.value)}
                       id="first_name"
-                      class="bg-gray-50 border h-10.5 mt-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      class="bg-gray-50  h-10.5 mt-2  text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl
+"
                       placeholder="isl,lhr,kr"
                       required
                     />
@@ -157,7 +160,7 @@ const Createbranch = () => {
                 ) : (
                   <div className="flex flex-row">
                     <div class="mx-2.5 overflow-hidden w-20">
-                      <p class="mt-7 absolute text-xl font-bold text-[indianred] leading-8 mr-3 overflow-hidden text-ellipsis whitespace-nowrap">
+                      <p class="mt-7 absolute text-xl font-bold text-white leading-8 mr-3 overflow-hidden text-ellipsis whitespace-nowrap">
                         {item.Branchname}
                       </p>
                     </div>

@@ -3,17 +3,24 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export async function POST(req) {
-  const body = await req.json();
-  const { AdminId } = body;
   try {
+    const { AdminId } = await req.json();
+
+    if (!AdminId) {
+      return new Response(
+        JSON.stringify({ error: "AdminId is required" }),
+        { status: 400 }
+      );
+    }
+
     const getstudents = await prisma.createstudent.findMany({
       where: {
-        AdminId: AdminId,
-        Movetoapplication:true
+        AdminId,
+        Movetoapplication: true,
       },
       select: {
         id: true,
-            Movetoapplication:true,
+        Movetoapplication: true,
         Branchname: true,
         Gender: true,
         DOB: true,
@@ -34,20 +41,20 @@ export async function POST(req) {
         FirstName: true,
         LastName: true,
         Source: true,
+        Studentstatus: true,
         createdAt: true,
-       Studentstatus:true,
         updatedAt: true,
-        AdminId:true,
-        userId:true,
-    
-        
+        AdminId: true,
+        userId: true,
       },
     });
+
     return new Response(JSON.stringify(getstudents), { status: 200 });
   } catch (error) {
-    console.log(error);
-    return new Response(JSON.stringify({ Error: "Error Fetching " }), {
-      status: 500,
-    });
+    console.error("Error fetching students:", error);
+    return new Response(
+      JSON.stringify({ error: "Error fetching students" }),
+      { status: 500 }
+    );
   }
 }

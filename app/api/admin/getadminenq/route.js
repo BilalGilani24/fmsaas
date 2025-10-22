@@ -35,7 +35,8 @@ export async function POST(req) {
         createdAt: true,
         Enquirystatus: true,
         updatedAt: true,
-        Movetostudent:true
+        Movetostudent:true,
+        Address:true
       },
     });
     return new Response(JSON.stringify(getbranch), { status: 200 });

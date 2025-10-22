@@ -5,7 +5,7 @@ import Displayapplication from './displayapplication/displayapplication';
 const Application = () => {
   return (
     <div className='flex flex-col'>
-    <div className="flex justify-center ml-80 mt-5"> {/* Center horizontally */}
+    <div className="flex justify-center ml-80 mt-[-100px]"> {/* Center horizontally */}
     <Image
       src={'/A.svg'}
       width={800}

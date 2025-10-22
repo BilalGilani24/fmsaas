@@ -1,273 +1,336 @@
+"use client";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import Followappointment from "./followups-appointment/followappointment";
 import Enquirypic from "./enquirypic";
+import { useForm } from "react-hook-form";
+import Select from "react-select";
 
 const Addenquiry = () => {
+  const {
+    register,
+    watch,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      Intrestedcountry: [],
+    },
+  });
+
+  // register Intrestedcountry for validation
+  useEffect(() => {
+    register("Intrestedcountry", {
+      required: "Please select at least one country",
+    });
+  }, [register]);
+
+  const formData = watch();
+
+  const options = [
+    { value: "United States", label: "United States" },
+    { value: "Canada", label: "Canada" },
+    { value: "United Kingdom", label: "United Kingdom" },
+    { value: "Ireland", label: "Ireland" },
+    { value: "Malaysia", label: "Malaysia" },
+    { value: "Finland", label: "Finland" },
+    { value: "Sweden", label: "Sweden" },
+    { value: "United Arab Emirates", label: "United Arab Emirates" },
+    { value: "Germany", label: "Germany" },
+    { value: "Romania", label: "Romania" },
+    { value: "Spain", label: "Spain" },
+    { value: "France", label: "France" },
+    { value: "Lithuania", label: "Lithuania" },
+    { value: "Others", label: "Others" },
+  ];
+
   return (
     <div className="flex flex-col">
-      <div className="ml-20">
+      <div className="ml-44">
         <Enquirypic />
       </div>
-      <div className="grid grid-cols-2 grid-rows-1 ">
-        <div className="bg-white h-[560px] w-full dm-sans border ml-64 mt-6 p-5 mb-5 rounded-lg shadow-lg">
+
+      <div className="grid grid-cols-2 grid-rows-1 ml-10">
+        <div className="bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl min-h-[637px] h-auto w-full dm-sans ml-72 mt-6 p-5 mb-5 rounded-lg">
           <div className="flex flex-wrap gap-5 items-center w-full max-md:max-w-full mb-10">
             <div className="flex flex-wrap flex-1 shrink gap-5 items-center self-stretch my-auto basis-0 min-w-[240px] max-md:max-w-full">
               <div className="flex relative flex-col justify-center self-stretch bg-gray-100 h-[70px] min-h-[70px] rounded-[16px] overflow-hidden w-[70px]">
                 <div className="w-[100px] h-[100px] aspect-auto">
-                  <Image src={"/profile.png"} width={100} height={100} />
+                  <Image src={"/profile.png"} width={100} height={100} alt="pic" />
                 </div>
               </div>
               <div className="flex flex-col self-stretch my-auto min-w-[240px]">
-                <div className="text-base dm-sans  font-bold text-gray-800">
-                  Personal Details
-                </div>
-                <div className="mt-2 text-sm dm-sans text-gray-500">
+                <div className="text-white dm-sans font-bold">Personal Details</div>
+                <div className="mt-2 text-sm dm-sans text-white">
                   *All the fields should be filled accurately*
-                </div>
-                <div className="mt-2 text-sm dm-sans text-red-500">
-                  (Firstname, mobile number and email is mandatory)
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-3 mt-[-20px] gap-6 mb-10">
-            <div id="input" className="relative">
-              <div>
-                <label
-                  for="first_name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  First name
-                </label>
-                <input
-                  type="text"
-                  id="first_name"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="John"
-                  required
-                />
-              </div>
+          {/* Form Fields */}
+          <div className="grid grid-cols-3 mt-[-30px] gap-6">
+            {/* First Name */}
+            <div>
+              <label className="block mb-2 text-sm font-medium text-white">
+                First name
+              </label>
+              <input
+                type="text"
+                {...register("FirstName", { required: "First name is required" })}
+                className="w-full bg-white/20 text-black border border-white/30 rounded-lg p-2 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 placeholder-gray-300"
+                placeholder="John"
+              />
+              {errors.FirstName && (
+                <span className="text-sm text-red-600">{errors.FirstName.message}</span>
+              )}
             </div>
 
-            <div id="input" className="relative">
-              <div>
-                <label
-                  for="last_name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Last name
-                </label>
-                <input
-                  type="text"
-                  id="last_name"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Doe"
-                  required
-                />
-              </div>
+            {/* Last Name */}
+            <div>
+              <label className="block mb-2 text-sm font-medium text-white">
+                Last name
+              </label>
+              <input
+                type="text"
+                {...register("LastName", { required: "Last name is required" })}
+                className="w-full bg-white/20 text-black border border-white/30 rounded-lg p-2 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 placeholder-gray-300"
+                placeholder="Doe"
+              />
+              {errors.LastName && (
+                <span className="text-sm text-red-600">{errors.LastName.message}</span>
+              )}
             </div>
 
-            <div id="input" className="relative">
-              <div>
-                <label
-                  for="email_name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Email Address
-                </label>
-                <input
-                  type="text"
-                  id="email_nam"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Doe@gmail.com"
-                  required
-                />
-              </div>
+            {/* Email */}
+            <div>
+              <label className="block mb-2 text-sm font-medium text-white">
+                Email Address
+              </label>
+              <input
+                type="email"
+                {...register("Emailaddress", { required: "Email is required" })}
+                className="w-full bg-white/20 text-white border border-white/30 rounded-lg p-2 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 placeholder-gray-300"
+                placeholder="Doe@gmail.com"
+              />
+              {errors.Emailaddress && (
+                <span className="text-sm text-red-600">
+                  {errors.Emailaddress.message}
+                </span>
+              )}
             </div>
 
-            <div id="input" className="relative">
-              <form class="max-w-sm mx-auto">
-                <label
-                  for="email_name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Select Gender
-                </label>
-
-                <select
-                  id="countries"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                >
-                  <option selected>Select Gender</option>
-                  <option value="US">Male</option>
-                  <option value="CA">Female</option>
-                </select>
-              </form>
-            </div>
-
-            <div id="input" className="relative">
-              <form class="max-w-sm mx-auto">
-                <label
-                  for="email_name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Select Intrested Country
-                </label>
-
-                <select
-                  id="countries"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                >
-                  <option selected>Choose a country</option>
-                  <option value="US">United States</option>
-                  <option value="CA">Canada</option>
-                  <option value="FR">United Kingdom</option>
-                  <option value="DE">Ireland</option>
-                  <option value="DE">Malaysia</option>
-                </select>
-              </form>
-            </div>
-            <div id="input" className="relative">
-              <div>
-                <label
-                  for="first_name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Choose Data of Birth
-                </label>
-                <input
-                  type="date"
-                  id="first_name"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Date of Birth"
-                  required
-                />
-              </div>
-            </div>
-
-            <div id="input" className="relative">
-              <div>
-                <label
-                  for="first_name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Choose Intake
-                </label>
-                <input
-                  type="date"
-                  id="first_name"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="John"
-                  required
-                />
-              </div>
-            </div>
-
-            <div id="input" className="relative">
-              <form class="max-w-sm mx-auto">
-                <label
-                  for="email_name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Select Apply Level
-                </label>
-
-                <select
-                  id="countries"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                >
-                  <option selected>Select Level</option>
-                  <option value="US">PHD</option>
-                  <option value="CA">Under Graduate</option>
-                  <option value="FR">Post Graduate</option>
-                  <option value="DE">Language Course</option>
-                </select>
-              </form>
-            </div>
-            <div id="input" className="relative">
-              <label
-                for="first_name"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            {/* Gender */}
+            <div>
+              <label className="block mb-2 text-sm font-medium text-white">
+                Select Gender
+              </label>
+              <select
+                {...register("Gender", { required: "Select Gender" })}
+                className="w-full bg-white/20 text-white border border-white/30 rounded-lg p-2 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 placeholder-gray-300"
               >
+                <option value="">Select Gender</option>
+                <option value="Male" className="text-black">Male</option>
+                <option value="Female" className="text-black">Female</option>
+              </select>
+              {errors.Gender && (
+                <span className="text-sm text-red-600">{errors.Gender.message}</span>
+              )}
+            </div>
+
+            {/* Interested Countries (multi-select) */}
+       <div>
+  <label className="block mb-2 text-sm font-medium text-white">
+    Select Interested Countries
+  </label>
+  <Select
+    isMulti
+    options={options}
+    className="text-black"
+    onChange={(selectedOptions) =>
+      setValue(
+        "Intrestedcountry",
+        selectedOptions
+          ? selectedOptions.map((opt) => opt.value).join(", ")
+          : ""
+      )
+    }
+  />
+  {errors.Intrestedcountry && (
+    <span className="text-sm text-red-600">
+      {errors.Intrestedcountry.message}
+    </span>
+  )}
+</div>
+
+            {/* DOB */}
+            <div>
+              <label className="block mb-2 text-sm font-medium text-white">
+                Choose Date of Birth
+              </label>
+              <input
+                {...register("DOB", { required: "Enter Date of Birth" })}
+                type="date"
+                className="w-full bg-white/20 text-white border border-white/30 rounded-lg p-2 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 placeholder-gray-300"
+              />
+              {errors.DOB && (
+                <span className="text-sm text-red-600">{errors.DOB.message}</span>
+              )}
+            </div>
+
+            {/* Intake */}
+            <div>
+              <label className="block mb-2 text-sm font-medium text-white">
+                Choose Intake
+              </label>
+              <input
+                {...register("Intake", { required: "Enter Intake" })}
+                type="month"
+                className="w-full bg-white/20 text-white border border-white/30 rounded-lg p-2 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 placeholder-gray-300"
+              />
+              {errors.Intake && (
+                <span className="text-sm text-red-600">{errors.Intake.message}</span>
+              )}
+            </div>
+
+            {/* Apply Level */}
+            <div>
+              <label className="block mb-2 text-sm font-medium text-white">
+                Select Apply Level
+              </label>
+              <select
+                {...register("Applylevel", { required: "Enter Apply Level" })}
+                className="w-full bg-white/20 text-white border border-white/30 rounded-lg p-2 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 placeholder-gray-300"
+              >
+                <option value="">Select Level</option>
+                <option value="PHD" className="text-black">PHD</option>
+                <option value="Undergraduate" className="text-black">Undergraduate</option>
+                <option value="Postgraduate" className="text-black">Postgraduate</option>
+                <option value="Foundation course" className="text-black">Foundation Course</option>
+                <option value="Language course" className="text-black">Language Course</option>
+              </select>
+              {errors.Applylevel && (
+                <span className="text-sm text-red-600">{errors.Applylevel.message}</span>
+              )}
+            </div>
+
+            {/* Source */}
+            <div>
+              <label className="block mb-2 text-sm font-medium text-white">
+                Select Source
+              </label>
+              <select
+                {...register("Source", { required: "Choose Source" })}
+                className="w-full bg-white/20 text-white border border-white/30 rounded-lg p-2 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 placeholder-gray-300"
+              >
+                <option value="">Select Source</option>
+                <option value="Walk-In" className="text-black">Walk-In</option>
+                <option value="Social Media" className="text-black">Social Media</option>
+                <option value="Reference" className="text-black">Reference</option>
+                <option value="Bill Boards" className="text-black">Bill Boards</option>
+              </select>
+              {errors.Source && (
+                <span className="text-sm text-red-600">{errors.Source.message}</span>
+              )}
+            </div>
+
+            {/* Test Given */}
+            <div>
+              <label className="block mb-2 text-sm font-medium text-white">
                 Test Given (Name, Score)
               </label>
               <input
                 type="text"
-                id="first_name"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Ilets"
-                required
+                {...register("Test", { required: "Enter Test (IELTS, PTE, etc.)" })}
+                className="w-full bg-white/20 text-black border border-white/30 rounded-lg p-2 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 placeholder-gray-300"
+                placeholder="IELTS"
               />
-            </div>
-            <div id="input" className="relative">
-              <div>
-                <label
-                  for="first_name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Mobile Number
-                </label>
-                <input
-                  type="number"
-                  id="first_name"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="+92-33200000"
-                  required
-                />
-              </div>
+              {errors.Test && (
+                <span className="text-sm text-red-600">{errors.Test.message}</span>
+              )}
             </div>
 
-            <div id="input" className="relative">
-              <div>
-                <label
-                  for="first_name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Alternative Mobile Number
-                </label>
-                <input
-                  type="number"
-                  id="first_name"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="+92-33200000"
-                  required
-                />
-              </div>
+            {/* Mobile Number */}
+            <div>
+              <label className="block mb-2 text-sm font-medium text-white">
+                Mobile Number
+              </label>
+              <input
+                type="tel"
+                {...register("Mobilenumber", { required: "Enter Mobile Number" })}
+                className="w-full bg-white/20 text-black border border-white/30 rounded-lg p-2 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 placeholder-gray-300"
+                placeholder="+92-33200000"
+              />
+              {errors.Mobilenumber && (
+                <span className="text-sm text-red-600">
+                  {errors.Mobilenumber.message}
+                </span>
+              )}
             </div>
 
-            <div id="input" className="relative">
-              <label
-                for="first_name"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
+            {/* Alternative Number */}
+            <div>
+              <label className="block mb-2 text-sm font-medium text-white">
+                Alternative Mobile Number
+              </label>
+              <input
+                type="tel"
+                {...register("Alternativenumber", {
+                  required: "Enter Alternative Number",
+                })}
+                className="w-full bg-white/20 text-black border border-white/30 rounded-lg p-2 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 placeholder-gray-300"
+                placeholder="+92-33200000"
+              />
+              {errors.Alternativenumber && (
+                <span className="text-sm text-red-600">
+                  {errors.Alternativenumber.message}
+                </span>
+              )}
+            </div>
+
+            {/* Interested Course */}
+            <div>
+              <label className="block mb-2 text-sm font-medium text-white">
                 Enter Interested Course
               </label>
               <input
                 type="text"
-                id="first_name"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                {...register("Intrestedcourse", {
+                  required: "Enter Interested Course",
+                })}
+                className="w-full bg-white/20 text-black border border-white/30 rounded-lg p-2 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 placeholder-gray-300"
                 placeholder="MBA"
-                required
               />
+              {errors.Intrestedcourse && (
+                <span className="text-sm text-red-600">
+                  {errors.Intrestedcourse.message}
+                </span>
+              )}
+            </div>
+
+            {/* Address */}
+            <div>
+              <label className="block mb-2 text-sm font-medium text-white">
+                Enter Address
+              </label>
+              <input
+                type="text"
+                {...register("Address", { required: "Enter Address" })}
+                className="w-full bg-white/20 text-black border border-white/30 rounded-lg p-2 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 placeholder-gray-300"
+                placeholder="Islamabad"
+              />
+              {errors.Address && (
+                <span className="text-sm text-red-600">{errors.Address.message}</span>
+              )}
             </div>
           </div>
-          <div id="input" className="relative justify-end flex mt-[-20px]">
-            <button
-              className="w-fit rounded-lg text-sm px-5 py-2 focus:outline-none h-[50px] border bg-blue-500 hover:bg-violet-600 focus:bg-violet-700 border-violet-500-violet- text-white focus:ring-4 focus:ring-violet-200 hover:ring-4 hover:ring-violet-100 transition-all duration-300"
-              type="button"
-            >
-              <div className="flex gap-2 items-center">Create Enquiry</div>
-            </button>
-          </div>
         </div>
+
+        {/* Right column — Followappointment */}
         <div>
-          <Followappointment />
+          <Followappointment handleSubmit={handleSubmit} formData={formData} />
         </div>
-        {/* <div className="ml-72  mb-5">
-        <Otherdetails />
-      </div> */}
       </div>
     </div>
   );

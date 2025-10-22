@@ -86,9 +86,11 @@ const Singlestudentdetail = ({ getacademic,getstudentacademic  }) => {
 
   return (
     <div className="ml-90">
-      <div className="relative w-[1000px] dm-sans mt-5 border bg-white overflow-x-auto shadow-md sm:rounded-lg">
+      <div className="relative w-[1000px] dm-sans mt-5 bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl
+overflow-x-auto  sm:rounded-lg">
         <table className="text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <thead className="text-xs text-white uppercase bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl
+ dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="px-6 py-3">
                 No
@@ -117,7 +119,7 @@ const Singlestudentdetail = ({ getacademic,getstudentacademic  }) => {
               <th scope="col" className="px-6 py-3">
                 Action
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3  whitespace-nowrap">
                 {getid?.length > 1
                   ? "Upload New Document"
                   : "View Document / Download"}
@@ -129,7 +131,8 @@ const Singlestudentdetail = ({ getacademic,getstudentacademic  }) => {
               item.id == getid ? (
                 <tr
                   key={index}
-                  className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                  className="bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl
+"
                 >
                   <td className="px-6 py-4">{index + 1}</td>
                   <td className=" py-4  w-72">
@@ -239,7 +242,8 @@ const Singlestudentdetail = ({ getacademic,getstudentacademic  }) => {
               ) : (
                 <tr
                   key={index}
-                  className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                  className="text-white bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl
+"
                 >
                   <td className="px-6 py-4">{index + 1}</td>
                   <td className="px-6 py-4">{item.Qualification}</td>
@@ -251,7 +255,7 @@ const Singlestudentdetail = ({ getacademic,getstudentacademic  }) => {
                   <td className="px-6 py-4">{item.Yearpassing}</td>
                   <td className="px-6 py-4">
                     <Pen
-                      className=" cursor-pointer   hover: text-green-500"
+                      className=" cursor-pointer   text-red-700"
                       onClick={() => setid(item.id)}
                     />
                   </td>

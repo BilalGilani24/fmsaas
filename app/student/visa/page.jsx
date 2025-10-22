@@ -7,7 +7,7 @@ const Visa = () => {
     <div className='flex flex-col'>
 
    
-    <div className="flex justify-center ml-80 mt-5"> {/* Center horizontally */}
+    <div className="flex justify-center ml-80 mt-[-100px]"> {/* Center horizontally */}
     <Image
       src={'/V.svg'}
       width={800}

@@ -1,11 +1,86 @@
+"use client";
+import useUserStore from "@/app/store/userid";
+import axios from "axios";
+import { Upload } from "lucide-react";
+import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import Singlestudentdetail from "./singlestudentdetail";
 
 const Academicdetails = () => {
+  const [getstudent, setstudent] = useState([]);
+  const { userId, initializeUser, fetchBranchConsulars } = useUserStore();
+  const [getid, setid] = useState();
+  const [picImage, setImage] = useState();
+  console.log(picImage)
+  const [getacademic, setacademic] = useState([]);
+  const handleUploadSuccess = (result) => {
+    const imageUrl = result.info.secure_url;
+    setImage(imageUrl);
+  };
+
+  const {
+    register,
+    watch,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const formData = watch();
+  useEffect(() => {
+    initializeUser();
+    fetchBranchConsulars();
+  }, [initializeUser, userId]);
+  useEffect(() => {
+    fetchstudent();
+  }, [userId]);
+  useEffect(() => {
+    getstudentacademic();
+  }, [getid]);
+  const fetchstudent = async () => {
+    try {
+      const res = await axios.post("/api/admin/getstudents", {
+        AdminId: userId,
+      });
+      setstudent(res.data);
+    } catch (error) {
+      toast.error("Error Fetching Students");
+    }
+  };
+  const getstudentacademic = async () => {
+    try {
+      const res = await axios.post("/api/admin/getacademicdetails", {
+        StudentId: getid,
+      });
+      setacademic(res.data);
+    } catch (error) {
+      toast.error("Error Fetching Student Academic Details");
+    }
+  };
+  const createacademics = async () => {
+    try {
+      await axios.post("/api/admin/createacademicdetails", {
+        Qualification: formData.Qualification,
+        Subject: formData.Subject,
+        Institute: formData.Institute,
+        Grade: formData.Grade,
+        Backlogs: formData.Backlogs,
+        YearStarting: formData.YearStarting,
+        Yearpassing: formData.Yearpassing,
+        Docs: picImage,
+        userId: userId,
+        StudentId: getid,
+      });
+      toast.success("Successfully Added Student Academic Details");
+    } catch (error) {
+      toast.error("Error Creating Student Academic Details");
+    }
+  };
   return (
-    <div className="flex ml-64 mt-5">
+    <div className="flex ml-64 mb-10 mt-5">
       <div>
-        <div className="bg-white dm-sans border p-5 rounded-lg shadow-xl">
+        <div className="border-white/20 shadow-md  bg-white/10 backdrop-blur-xl dm-sans  p-5 rounded-lg ">
           <div className="flex flex-wrap gap-5 items-center  w-[960px]  max-md:max-w-full mb-10">
             <div className="flex flex-wrap flex-1 shrink gap-5 items-center self-stretch my-auto basis-0 min-w-[240px] max-md:max-w-full">
               <div className="flex relative flex-col justify-center self-stretch bg-gray-100 h-[70px] min-h-[70px] rounded-[16px] overflow-hidden w-[70px]">
@@ -14,7 +89,7 @@ const Academicdetails = () => {
                 </div>
               </div>
               <div className="flex flex-col self-stretch my-auto min-w-[240px]">
-                <div className="text-base text-gray-800">Academic Detail</div>
+                <div className="text-base text-white">Academic Detail</div>
                 <div className="mt-2 text-sm text-red-500">
                   *Add student academic qualifications one by one*
                 </div>
@@ -22,129 +97,241 @@ const Academicdetails = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-6 mt-[-20px] mb-3 ">
+          <div className="grid grid-cols-2 gap-6 mt-[-20px]  ">
             <div id="input" className="relative">
-              <form class="max-w-md mx-auto">
-                <label
-                  for="countries"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Select Qualification
-                </label>
-                <select
-                  id="countries"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                >
-                  <option selected>Select Qualification</option>
-                  <option value="US">Matric</option>
-                  <option value="CA">Intermediate</option>
-                  <option value="FR">Under Graduate</option>
-                  <option value="DE">Post Graduate</option>
-                  <option value="DE">PHD</option>
-                </select>
-              </form>
+              <label
+                htmlFor="countries"
+                className="block mb-2 text-sm font-medium text-white dark:text-white"
+              >
+                Select Student
+              </label>
+              <select
+                onChange={(e) => setid(e.target.value)}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2  transition placeholder-gray-300"
+              >
+                <option>Select Student</option>
+                {getstudent?.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.Name}
+                  </option>
+                ))}
+              </select>
             </div>
-
+            <div id="input" className="relative">
+              <label className="block mb-2 text-sm font-medium text-white dark:text-white">
+                Select Qualification
+              </label>
+              <select
+                {...register("Qualification", {
+                  required: "Choose Student Qualification",
+                })}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2  transition placeholder-gray-300"
+              >
+                <option>Select Qualification</option>
+                <option value="Matric">Matric</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Under Graduate">Under Graduate</option>
+                <option value="Post Graduate">Post Graduate</option>
+                <option value="PHD">PHD</option>
+              </select>
+              {errors.Qualification && (
+                <span className="text-sm text-red-500">
+                  {errors.Qualification.message}
+                </span>
+              )}
+            </div>
             <div id="input" className="relative">
               <div>
                 <label
                   for="first_name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-white dark:text-white"
                 >
-                  Subjects
+                  Subjects/Major/Degree
                 </label>
                 <input
                   type="text"
-                  id="first_name"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  {...register("Subject", {
+                    required: "Enter Subject",
+                  })}
+                  className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300"
                   placeholder="Science"
                   required
                 />
+                {errors.Subject && (
+                  <span className="text-sm text-red-500">
+                    {errors.Subject.message}
+                  </span>
+                )}
               </div>
             </div>
-
             <div id="input" className="relative">
               <div>
                 <label
                   for="first_name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-white dark:text-white"
                 >
-                  College/Board
+                  College/Board/University
                 </label>
                 <input
                   type="text"
-                  id="first_name"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  {...register("Institute", {
+                    required: "Enter Subject",
+                  })}
+                  className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300"
                   placeholder="Federal Board"
                   required
                 />
+                {errors.Institute && (
+                  <span className="text-sm text-red-500">
+                    {errors.Institute.message}
+                  </span>
+                )}
               </div>
             </div>
-
             <div id="input" className="relative">
               <div>
                 <label
                   for="first_name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-white dark:text-white"
                 >
                   Percentage/Grade
                 </label>
                 <input
                   type="number"
-                  id="first_name"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  {...register("Grade", {
+                    required: "Enter Subject",
+                  })}
+                  className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300"
                   placeholder="90%"
                   required
                 />
+                {errors.Grade && (
+                  <span className="text-sm text-red-500">
+                    {errors.Grade.message}
+                  </span>
+                )}
               </div>
             </div>
-
             <div id="input" className="relative">
               <div>
                 <label
                   for="first_name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-white dark:text-white"
                 >
-                  Backlogs
+                  Backlogs/Compartment
                 </label>
                 <input
                   type="text"
-                  id="first_name"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  {...register("Backlogs", {
+                    required: "Enter Subject",
+                  })}
+                  className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300"
                   placeholder="0"
                   required
                 />
+                {errors.Backlogs && (
+                  <span className="text-sm text-red-500">
+                    {errors.Backlogs.message}
+                  </span>
+                )}
               </div>
-            </div>
-
+            </div>{" "}
             <div id="input" className="relative">
               <div>
                 <label
                   for="first_name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-white dark:text-white"
+                >
+                  Year of Starting
+                </label>
+                <input
+                  type="date"
+                  {...register("YearStarting", {
+                    required: "Enter Starting Year",
+                  })}
+                  className="bg-gray-50  border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300"
+                  placeholder="John"
+                  required
+                />
+                {errors.YearStarting && (
+                  <span className="text-sm text-red-500">
+                    {errors.YearStarting.message}
+                  </span>
+                )}
+              </div>
+            </div>
+            <div id="input" className="relative">
+              <div>
+                <label
+                  for="first_name"
+                  className="block mb-2 text-sm font-medium text-white dark:text-white"
                 >
                   Year of Passing
                 </label>
                 <input
                   type="date"
-                  id="first_name"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  {...register("Yearpassing", {
+                    required: "Enter Passing Year",
+                  })}
+                  className="bg-gray-50  border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300"
                   placeholder="John"
                   required
                 />
+                {errors.Yearpassing && (
+                  <span className="text-sm text-red-500">
+                    {errors.Yearpassing.message}
+                  </span>
+                )}
               </div>
             </div>
+            {getid && (
+              <div id="input" className="relative">
+                <div>
+                  <label
+                    for="first_name"
+                    className="block mb-2 text-sm font-medium text-white dark:text-white"
+                  >
+                    Upload (PDF,PNG,JPG)
+                  </label>
+
+          <CldUploadWidget
+                    uploadPreset="fm_upload"
+                    onSuccess={handleUploadSuccess}
+                     options={{
+    resourceType: "auto",
+    clientAllowedFormats: ["image", "pdf"],
+    maxFileSize: 10485760,
+  }}
+                  >
+                    {({ open }) => {
+                      return (
+                        <div className=" mt-5 ">
+                          <button
+                            className="flex gap-2 items-center justify-center text-white bg-green-600 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                            onClick={() => open()}
+                          >
+                            <Upload />
+                            Upload Files
+                          </button>
+                        </div>
+                      );
+                    }}
+                  </CldUploadWidget>
+                </div>
+              </div>
+            )}
           </div>
 
-          <div className="sm:flex sm:flex-row-reverse flex gap-4">
+          <div className="sm:flex sm:flex-row-reverse mt-5 flex gap-4">
             <button
-              className="w-fit rounded-lg text-sm px-5 py-2 focus:outline-none h-[50px] border bg-blue-500 hover:bg-violet-600 focus:bg-violet-700 border-violet-500-violet- text-white focus:ring-4 focus:ring-violet-200 hover:ring-4 hover:ring-violet-100 transition-all duration-300"
-              type="button"
+              className="w-fit rounded-lg text-sm px-5 py-2 focus:outline-none h-[50px]  bg-blue-500 hover:bg-violet-600 focus:bg-violet-700 border-violet-500-violet- text-white focus:ring-4 focus:ring-violet-200 hover:ring-4 hover:ring-violet-100 transition-all duration-300"
+              onClick={handleSubmit(createacademics)}
             >
-              <div className="flex gap-2 items-center">Add Qualification</div>
+              Add Qualification
             </button>
           </div>
         </div>
+        {getid?.length > 1 && <Singlestudentdetail getacademic={getacademic} getstudentacademic={getstudentacademic} />}
       </div>
     </div>
   );

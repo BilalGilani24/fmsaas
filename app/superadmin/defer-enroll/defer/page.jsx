@@ -1,39 +1,41 @@
-import React from "react";
+'use client'
+import React, { useEffect, useState } from "react";
 import Deferpic from "./deferpic";
 import { Eye, Mail, MessageCircle, Pen, UserPlus } from "lucide-react";
+import useUserStore from "@/app/store/userid";
+import axios from "axios";
+import { toast } from "react-toastify";
+import Loader from "../../loader";
 
 const Defer = () => {
+    const { userId, initializeUser } = useUserStore();
+    const [getdata,setdata]=useState([])
+    const [isloading,setloading]=useState(false)
+    useEffect(()=>{
+      initializeUser()
+      if(userId){
+        getdefer()
+      }
+    },[userId])
+    const getdefer=async()=>{
+      try {
+        setloading(false)
+        const res=await axios.post("/api/admin/getdefer",{
+          AdminId:userId
+        })
+        setdata(res.data)
+        setloading(true)
+      } catch (error) {
+        toast.error("Error fetching the defer students")
+      }
+    }
   return (
     <div className="flex flex-col dm-sans">
       <div>
         <Deferpic />
       </div>
-      <div className=" ml-[940px]  mt-3">
-        <form class="max-w-sm mx-auto">
-          <label
-            for="countries"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Select Branch{" "}
-            <strong className="text-blue-500">
-              (Branch Wise Defer Students)
-            </strong>
-          </label>
-          <select
-            id="countries"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          >
-            <option selected>Choose a Branch</option>
-            <option value="US">Own Account</option>
-            <option value="US">Lahore</option>
-            <option value="CA">Islamabad</option>
-            <option value="FR">Lahore</option>
-            <option value="DE">Karachi</option>
-          </select>
-        </form>
-      </div>
-      <div className="flex flex-row justify-end mt-3">
-        <div className="flex w-auto p-3 h-11 mr-[385px]  border  rounded-lg gap-5 items-center justify-center bg-white shadow-sm flex-row">
+      <div className="flex flex-row justify-end mt-10">
+        <div className="flex w-auto p-3 h-11 mr-[385px]    rounded-lg gap-5 items-center justify-center  bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl flex-row">
           <div className="flex text-sm flex-row cursor-pointer hover:text-blue-600 gap-2">
             Send Mail
             <span>
@@ -73,7 +75,7 @@ const Defer = () => {
             <input
               type="search"
               id="default-search"
-              class="block w-full p-2.5 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="block w-full rounded-lg  p-2.5 ps-10 bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl"
               placeholder="Search Student"
               required
             />
@@ -87,14 +89,12 @@ const Defer = () => {
         </form>
       </div>
 
-      <div className="w-[1100px] border rounded ml-56 mb-10 mt-3 overflow-x-auto">
+      <div className="w-[1100px]  rounded ml-56 mb-10 mt-3 overflow-x-auto">
         <div class="relative w-full ">
           <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs  text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <thead class="text-xs text-white bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl">
               <tr>
-                <th scope="col" class="px-6 py-3">
-                  Create Date / Last Update
-                </th>
+              
 
                 <th scope="col" class="px-6 py-3">
                   <div className="w-42">Name</div>
@@ -114,9 +114,7 @@ const Defer = () => {
                 <th scope="col" class="px-6 py-3">
                   <div className="w-24">Defer Letter</div>
                 </th>
-                <th scope="col" class="px-6 py-3">
-                  <div className="w-24">Stage</div>
-                </th>
+               
                 <th scope="col" class="px-6 py-3">
                   <div className="w-28">Applied Country</div>
                 </th>
@@ -127,9 +125,7 @@ const Defer = () => {
                 <th scope="col" class="px-6 py-3">
                   <div className="w-32">Assigned By</div>
                 </th>
-                <th scope="col" class="px-6 py-3">
-                  Intake
-                </th>
+                
                 <th scope="col" class="px-6 py-3">
                   <div className=" w-32">Apply Level</div>
                 </th>
@@ -142,110 +138,38 @@ const Defer = () => {
                 </th>
               </tr>
             </thead>
-            <tbody>
-              <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th
-                  scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  7/11/2024 3:14-PM
-                </th>
-
-                <td class="px-6 py-4">
-                  <div className="w-48">Syed Muhammad Bilal Shoaib</div>
-                </td>
-                <td class="px-6 py-4">
-                  <div className="w-36">bilalshoaib644@gmail.com</div>
-                </td>
-                <td class="px-6 py-4">03329792617</td>
-                <td class="px-6 py-4">25-Feb</td>
-                <td>
-                  <div className=" p-2 text-center  text-black  rounded-lg    bg-red-500 cursor-pointer">
-                    Low-Marks
-                  </div>
-                </td>
-
-                <td class="px-6 py-4">
-                  <Eye className=" hover:text-blue-500" />
-                </td>
-                <td class="px-6 py-4">$2999</td>
-                <td class="px-6 py-4">$2999</td>
-                <td class="px-6 py-4">$2999</td>
-                <td class="px-6 py-4">$2999</td>
-                <td class="px-6 py-4">$2999</td>
-                <td class="px-6 py-4">$2999</td>
-                <td class="px-6 py-4">$2999</td>
-                <td class="px-6 py-4">$2999</td>
-              </tr>
-              <tr class="bg-white border-b  dark:bg-gray-800 dark:border-gray-700">
-                <th
-                  scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  7/11/2024 3:14-PM
-                </th>
-
-                <td class="px-6 py-4">
-                  <div className="w-48">Syed Muhammad Bilal Shoaib</div>
-                </td>
-                <td class="px-6 py-4">
-                  <div className="w-36">bilalshoaib644@gmail.com</div>
-                </td>
-                <td class="px-6 py-4">03329792617</td>
-                <td class="px-6 py-4">25-Feb</td>
-                <td>
-                  <div className=" p-2 text-center  text-black  rounded-lg    bg-red-500 cursor-pointer">
-                    Low-Marks
-                  </div>
-                </td>
-
-                <td class="px-6 py-4">
-                  <Eye className=" hover:text-blue-500" />
-                </td>
-                <td class="px-6 py-4">Laptop PC</td>
-                <td class="px-6 py-4">$1999</td>
-                <td class="px-6 py-4">White</td>
-                <td class="px-6 py-4">Laptop PC</td>
-                <td class="px-6 py-4">$1999</td>
-                <td class="px-6 py-4">White</td>
-                <td class="px-6 py-4">Laptop PC</td>
-                <td class="px-6 py-4">Laptop PC</td>
-              </tr>
-              <tr class="bg-white dark:bg-gray-800">
-                <th
-                  scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  7/11/2024 3:14-PM
-                </th>
-
-                <td class="px-6 py-4">
-                  <div className="w-48">Syed Muhammad Bilal Shoaib</div>
-                </td>
-                <td class="px-6 py-4">
-                  <div className="w-36">bilalshoaib644@gmail.com</div>
-                </td>
-                <td class="px-6 py-4">03329792617</td>
-                <td class="px-6 py-4">25-Feb</td>
-                <td>
-                  <div className="p-2 text-center  text-black  rounded-lg    bg-red-500 cursor-pointer">
-                    No ilets
-                  </div>
-                </td>
-
-                <td class="px-6 py-4">
-                  <Eye className=" hover:text-blue-500" />
-                </td>
-                <td class="px-6 py-4">Accessories</td>
-                <td class="px-6 py-4">$99</td>
-                <td class="px-6 py-4">Black</td>
-                <td class="px-6 py-4">Accessories</td>
-                <td class="px-6 py-4">$99</td>
-                <td class="px-6 py-4">Black</td>
-                <td class="px-6 py-4">Accessories</td>
-                <td class="px-6 py-4">Accessories</td>
-              </tr>
-            </tbody>
+           {!isloading?(<div className="p-5">  <Loader/></div>):(
+             <tbody>
+  {getdata.map((item, index) => (
+    <tr key={index} className="bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl text-white">
+     
+      <td className="px-6 py-4">
+        <div className="w-48">{item.Name}</div>
+      </td>
+      <td className="px-6 py-4">
+        <div className="w-36">{item.Email}</div>
+      </td>
+      <td className="px-6 py-4">{item.Mobilenumber}</td>
+      <td className="px-6 py-4">{item.Deferintake}</td>
+      <td>
+        <div className="p-2 text-center text-white rounded-lg bg-red-500 cursor-pointer">
+          {item.Deferreason}
+        </div>
+      </td>
+      <td className="px-6 py-4">
+        <Eye   onClick={() => window.open(item.Deferletter, "_blank")} className="hover:text-blue-500" />
+      </td>
+      <td className="px-6 py-4">{item.Appliedcountry}</td>
+      <td className="px-6 py-4">None</td>
+      <td className="px-6 py-4">None</td>
+      <td className="px-6 py-4">{item.Applylevel}</td>
+      <td className="px-6 py-4">{item.Course}</td>
+      <td className="px-6 py-4">{item.Branch}</td>
+    </tr>
+  ))}
+</tbody>
+           )}
+           
           </table>
         </div>
       </div>

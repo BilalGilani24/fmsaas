@@ -3,100 +3,45 @@ import { Bell, LogOut, User } from "lucide-react";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
-import { toast } from "react-toastify";
+import React, { useState } from "react";
 
 const Navbar = () => {
-  const [display, setDisplay] = useState(false);
-  const [isClient, setIsClient] = useState(false); // State to track client-side rendering
-
-  // useEffect to set state only after the component mounts
-  useEffect(() => {
-    setIsClient(true); // Update the state after the component is mounted
-  }, []);
+  
 
   const handleSignOut = async () => {
-    await signOut({ callbackUrl: "/", redirect: false });
-    window.location.reload();
-    toast.success("Logged out successfully");
+    localStorage.clear();
+    sessionStorage.clear();
+    await signOut({ callbackUrl: "/" });
   };
 
-  if (!isClient) {
-    return null; // Prevent rendering until client-side
-  }
-
   return (
-    <div className="flex mt-2 ml-[-20px] dm-sans bg-white gap-2 justify-end items-center w-full">
-      <div className="dm-sans inline-flex rounded-md shadow-sm" role="group">
+    <nav className="w-full ml-[1250px] px-8 py-4 flex items-center justify-between rounded-b-3xl">
+      {/* Left Side - Logo + Title */}
+    
+
+      {/* Right Side - Actions */}
+      <div className="flex items-center gap-5">
+        {/* Profile */}
         <Link href={"/admin/profile"}>
-          <button
-            type="button"
-            className="inline-flex items-center  px-4 py-3 text-sm font-medium text-blue-600 bg-white border border-gray-200 rounded-s-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white"
-          >
-            <User className="w-4 h-4 mr-2" />
+          <button className="flex items-center gap-2 px-4 py-2 rounded-2xl text-sm font-medium text-gray-800 bg-gradient-to-r from-gray-100 to-gray-200 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
+            <User className="w-4 h-4 text-blue-600" />
             Profile
           </button>
         </Link>
 
-        <button
-          type="button"
-          onClick={() => setDisplay((prev) => !prev)}
-          className="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white"
-        >
-          <Bell className="w-4 h-4 mr-2" />
-          Notifications <span className="ml-2">(3)</span>
-        </button>
+        {/* Notifications */}
+       
 
+        {/* Logout */}
         <button
           onClick={handleSignOut}
-          type="button"
-          className="inline-flex  items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded-e-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white"
+          className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300"
         >
-          <LogOut className="w-4 h-4 mr-2" />
+          <LogOut className="w-4 h-4" />
           Logout
         </button>
       </div>
-
-      {display && (
-        <div className="z-10 absolute shadow-md overflow-x-auto bg-white h-72 w-[450px] border mt-[350px] ml-[-300px] rounded">
-          <div className="text-xl font-bold border-b p-3">Notifications</div>
-
-          {Array(4)
-            .fill()
-            .map((_, index) => (
-              <div
-                key={index}
-                className="flex items-center justify-between border-b text-gray-600 w-auto h-auto p-3"
-              >
-                <div className="flex items-center">
-                  <span className="mr-3">
-                    <Image
-                      src={"/profile.png"}
-                      width={110}
-                      height={110}
-                      className="rounded-full"
-                      alt="profile image"
-                    />
-                  </span>
-                  <p>
-                    Bilal from Islamabad branch applied visa for Hamza in Jerry
-                    office
-                  </p>
-                </div>
-                <div className="text-right ml-4">
-                  <p className="text-md mb-1">11/4/2024,12:02pm</p>
-                  <button
-                    type="button"
-                    className="text-white w-32 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                  >
-                    Mark as Read
-                  </button>
-                </div>
-              </div>
-            ))}
-        </div>
-      )}
-    </div>
+    </nav>
   );
 };
 

@@ -20,7 +20,8 @@ export async function POST(req) {
         Course:true,
         Appliedcountry:true,
         Applylevel:true,
-        Approveletter:true
+        Approveletter:true,
+        isEnrolled:true
       },
     });
     return new Response(JSON.stringify(getvisa), { status: 200 });

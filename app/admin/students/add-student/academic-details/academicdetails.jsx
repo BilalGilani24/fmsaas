@@ -14,6 +14,7 @@ const Academicdetails = () => {
   const { userId, initializeUser, fetchBranchConsulars } = useUserStore();
   const [getid, setid] = useState();
   const [picImage, setImage] = useState();
+  console.log(picImage)
   const [getacademic, setacademic] = useState([]);
   const handleUploadSuccess = (result) => {
     const imageUrl = result.info.secure_url;
@@ -79,7 +80,7 @@ const Academicdetails = () => {
   return (
     <div className="flex ml-64 mb-10 mt-5">
       <div>
-        <div className="bg-white dm-sans border p-5 rounded-lg shadow-sm">
+        <div className="border-white/20 shadow-md  bg-white/10 backdrop-blur-xl dm-sans  p-5 rounded-lg ">
           <div className="flex flex-wrap gap-5 items-center  w-[960px]  max-md:max-w-full mb-10">
             <div className="flex flex-wrap flex-1 shrink gap-5 items-center self-stretch my-auto basis-0 min-w-[240px] max-md:max-w-full">
               <div className="flex relative flex-col justify-center self-stretch bg-gray-100 h-[70px] min-h-[70px] rounded-[16px] overflow-hidden w-[70px]">
@@ -88,7 +89,7 @@ const Academicdetails = () => {
                 </div>
               </div>
               <div className="flex flex-col self-stretch my-auto min-w-[240px]">
-                <div className="text-base text-gray-800">Academic Detail</div>
+                <div className="text-base text-white">Academic Detail</div>
                 <div className="mt-2 text-sm text-red-500">
                   *Add student academic qualifications one by one*
                 </div>
@@ -100,13 +101,13 @@ const Academicdetails = () => {
             <div id="input" className="relative">
               <label
                 htmlFor="countries"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-white dark:text-white"
               >
                 Select Student
               </label>
               <select
                 onChange={(e) => setid(e.target.value)}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2  transition placeholder-gray-300"
               >
                 <option>Select Student</option>
                 {getstudent?.map((item) => (
@@ -117,14 +118,14 @@ const Academicdetails = () => {
               </select>
             </div>
             <div id="input" className="relative">
-              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              <label className="block mb-2 text-sm font-medium text-white dark:text-white">
                 Select Qualification
               </label>
               <select
                 {...register("Qualification", {
                   required: "Choose Student Qualification",
                 })}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2  transition placeholder-gray-300"
               >
                 <option>Select Qualification</option>
                 <option value="Matric">Matric</option>
@@ -143,7 +144,7 @@ const Academicdetails = () => {
               <div>
                 <label
                   for="first_name"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-white dark:text-white"
                 >
                   Subjects/Major/Degree
                 </label>
@@ -152,7 +153,7 @@ const Academicdetails = () => {
                   {...register("Subject", {
                     required: "Enter Subject",
                   })}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300"
                   placeholder="Science"
                   required
                 />
@@ -167,7 +168,7 @@ const Academicdetails = () => {
               <div>
                 <label
                   for="first_name"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-white dark:text-white"
                 >
                   College/Board/University
                 </label>
@@ -176,7 +177,7 @@ const Academicdetails = () => {
                   {...register("Institute", {
                     required: "Enter Subject",
                   })}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300"
                   placeholder="Federal Board"
                   required
                 />
@@ -191,7 +192,7 @@ const Academicdetails = () => {
               <div>
                 <label
                   for="first_name"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-white dark:text-white"
                 >
                   Percentage/Grade
                 </label>
@@ -200,7 +201,7 @@ const Academicdetails = () => {
                   {...register("Grade", {
                     required: "Enter Subject",
                   })}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300"
                   placeholder="90%"
                   required
                 />
@@ -215,7 +216,7 @@ const Academicdetails = () => {
               <div>
                 <label
                   for="first_name"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-white dark:text-white"
                 >
                   Backlogs/Compartment
                 </label>
@@ -224,7 +225,7 @@ const Academicdetails = () => {
                   {...register("Backlogs", {
                     required: "Enter Subject",
                   })}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className=" border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300"
                   placeholder="0"
                   required
                 />
@@ -239,7 +240,7 @@ const Academicdetails = () => {
               <div>
                 <label
                   for="first_name"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-white dark:text-white"
                 >
                   Year of Starting
                 </label>
@@ -248,7 +249,7 @@ const Academicdetails = () => {
                   {...register("YearStarting", {
                     required: "Enter Starting Year",
                   })}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50  border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300"
                   placeholder="John"
                   required
                 />
@@ -263,7 +264,7 @@ const Academicdetails = () => {
               <div>
                 <label
                   for="first_name"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-white dark:text-white"
                 >
                   Year of Passing
                 </label>
@@ -272,7 +273,7 @@ const Academicdetails = () => {
                   {...register("Yearpassing", {
                     required: "Enter Passing Year",
                   })}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50  border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300"
                   placeholder="John"
                   required
                 />
@@ -288,7 +289,7 @@ const Academicdetails = () => {
                 <div>
                   <label
                     for="first_name"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-white dark:text-white"
                   >
                     Upload (PDF,PNG,JPG)
                   </label>
@@ -296,6 +297,11 @@ const Academicdetails = () => {
           <CldUploadWidget
                     uploadPreset="fm_upload"
                     onSuccess={handleUploadSuccess}
+                     options={{
+    resourceType: "auto",
+    clientAllowedFormats: ["image", "pdf"],
+    maxFileSize: 10485760,
+  }}
                   >
                     {({ open }) => {
                       return (
@@ -318,7 +324,7 @@ const Academicdetails = () => {
 
           <div className="sm:flex sm:flex-row-reverse mt-5 flex gap-4">
             <button
-              className="w-fit rounded-lg text-sm px-5 py-2 focus:outline-none h-[50px] border bg-blue-500 hover:bg-violet-600 focus:bg-violet-700 border-violet-500-violet- text-white focus:ring-4 focus:ring-violet-200 hover:ring-4 hover:ring-violet-100 transition-all duration-300"
+              className="w-fit rounded-lg text-sm px-5 py-2 focus:outline-none h-[50px]  bg-blue-500 hover:bg-violet-600 focus:bg-violet-700 border-violet-500-violet- text-white focus:ring-4 focus:ring-violet-200 hover:ring-4 hover:ring-violet-100 transition-all duration-300"
               onClick={handleSubmit(createacademics)}
             >
               Add Qualification

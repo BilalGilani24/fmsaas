@@ -126,7 +126,8 @@ Docs:picImage
   return (
     <>
       <div className="mr-3 mt-5">
-        <div className="bg-white dm-sans mb-5 border p-5 rounded-lg shadow-sm">
+        <div className="bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl
+ dm-sans mb-5 border p-5 rounded-lg ">
           <div className="flex flex-wrap gap-5 items-center w-full max-md:max-w-full mb-10">
             <div className="flex flex-wrap flex-1 shrink gap-5 items-center self-stretch my-auto basis-0 min-w-[240px] max-md:max-w-full">
               <div className="flex relative flex-col justify-center self-stretch bg-gray-100 h-[70px] min-h-[70px] rounded-[16px] overflow-hidden w-[70px]">
@@ -135,7 +136,7 @@ Docs:picImage
                 </div>
               </div>
               <div className="flex flex-col self-stretch my-auto min-w-[240px]">
-                <div className="text-base text-gray-800">Proficency Test</div>
+                <div className="text-base text-white">Proficency Test</div>
                 <div className="mt-2 text-sm text-red-500">
                   *Add student proficency test one by one*
                 </div>
@@ -149,7 +150,7 @@ Docs:picImage
               <div>
                 <label
                   for="first_name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  class="block mb-2 text-sm font-medium text-white dark:text-white"
                 >
                   Listening
                 </label>
@@ -158,7 +159,7 @@ Docs:picImage
                   {...register("Listening", {
                     required: "Enter Listening Module",
                   })}
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                className="bg-gray-50 border-gray-300 text-white text-sm rounded-lg bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 block w-full p-2.5 "
                   placeholder="8"
                   required
                 />
@@ -174,7 +175,7 @@ Docs:picImage
               <div>
                 <label
                   for="first_name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  class="block mb-2 text-sm font-medium text-white dark:text-white"
                 >
                   Reading
                 </label>
@@ -183,7 +184,7 @@ Docs:picImage
                   {...register("Reading", {
                     required: "Enter Reading Module",
                   })}
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                className="bg-gray-50 border-gray-300 text-white text-sm rounded-lg bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 block w-full p-2.5 "
                   placeholder="4"
                   required
                 />
@@ -199,7 +200,7 @@ Docs:picImage
               <div>
                 <label
                   for="first_name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  class="block mb-2 text-sm font-medium text-white dark:text-white"
                 >
                   Writing
                 </label>
@@ -208,7 +209,7 @@ Docs:picImage
                   {...register("Writing", {
                     required: "Enter Writing Module",
                   })}
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                className="bg-gray-50 border-gray-300 text-white text-sm rounded-lg bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 block w-full p-2.5 "
                   placeholder="6"
                   required
                 />
@@ -224,7 +225,7 @@ Docs:picImage
               <div>
                 <label
                   for="first_name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  class="block mb-2 text-sm font-medium text-white dark:text-white"
                 >
                   Speaking
                 </label>
@@ -233,7 +234,7 @@ Docs:picImage
                   {...register("Speaking", {
                     required: "Enter Speaking Module",
                   })}
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                className="bg-gray-50 border-gray-300 text-white text-sm rounded-lg bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 block w-full p-2.5 "
                   placeholder="7"
                   required
                 />
@@ -248,7 +249,7 @@ Docs:picImage
               <div>
                 <label
                   for="first_name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  class="block mb-2 text-sm font-medium text-white dark:text-white"
                 >
                   Overall
                 </label>
@@ -257,7 +258,7 @@ Docs:picImage
                   {...register("Overall", {
                     required: "Enter Overall Score",
                   })}
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                className="bg-gray-50 border-gray-300 text-white text-sm rounded-lg bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 block w-full p-2.5 "
                   placeholder="3"
                   required
                 />
@@ -272,7 +273,7 @@ Docs:picImage
               <div>
                 <label
                   for="first_name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  class="block mb-2 text-sm font-medium text-white dark:text-white"
                 >
                   Total Score
                   <span className="text-red-600">(PTE,DUOLINGO)</span>
@@ -282,7 +283,7 @@ Docs:picImage
                   {...register("Totalscore", {
                     required: "Enter Totalscore",
                   })}
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                className="bg-gray-50 border-gray-300 text-white text-sm rounded-lg bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 block w-full p-2.5 "
                   placeholder="57"
                   required
                 />
@@ -318,7 +319,7 @@ Docs:picImage
           <div className="sm:flex sm:flex-row-reverse flex gap-4 mt-5">
             <button
               onClick={createporficencytest}
-              className="w-fit rounded-lg text-sm px-5 py-2 focus:outline-none h-[50px] border bg-blue-500 hover:bg-violet-600 focus:bg-violet-700 border-violet-500-violet- text-white focus:ring-4 focus:ring-violet-200 hover:ring-4 hover:ring-violet-100 transition-all duration-300"
+              className="w-fit rounded-lg text-sm px-5 py-2 focus:outline-none h-[50px]  bg-blue-500 hover:bg-violet-600 focus:bg-violet-700 border-violet-500-violet- text-white focus:ring-4 focus:ring-violet-200 hover:ring-4 hover:ring-violet-100 transition-all duration-300"
               type="button"
             >
               <div className="flex gap-2 items-center">Add Proficency Test</div>
@@ -327,9 +328,10 @@ Docs:picImage
         </div>
       </div>
       {userId?.length > 1 && (
-        <div className="relative w-[1000px] mt-10 overflow-scroll border bg-white overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 w-full">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <div className="relative w-[1000px] mt-10 overflow-scroll  overflow-x-auto shadow-md sm:rounded-lg">
+          <table className="text-sm text-left rtl:text-right text-white dark:text-gray-400 w-full">
+            <thead className="text-xs text-white uppercase bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl
+ dark:bg-gray-700 dark:text-gray-400">
          <tr>
   <th className="px-6 py-3 min-w-[50px]">#</th>
   <th className="px-6 py-3 min-w-[150px]">Test Name</th>
@@ -349,7 +351,8 @@ Docs:picImage
                 item.id == testid ? (
                   <tr
                     key={index}
-                    className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                    className="bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl
+ even:dark:bg-gray-800 border-b dark:border-gray-700"
                   >
                     <td className="px-6 py-4">{index + 1}</td>
                        <td className="px-6 py-4">
@@ -454,7 +457,8 @@ Docs:picImage
                 ) : (
                   <tr
                     key={index}
-                    className="odd:bg-white  odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                    className="bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl
+ border-b dark:border-gray-700 text-white"
                   >
                     <td className="px-6 py-4">{index + 1}</td>
                     <td className="px-6 py-4">

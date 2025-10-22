@@ -128,7 +128,8 @@ const editworkexp=async(id)=>{
   return (
     <>
     <div className=" mb-5 mt-5">
-      <div className="bg-white dm-sans ml-96 border p-5 rounded-lg shadow-sm">
+      <div className="bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl
+ dm-sans ml-96  p-5 rounded-lg ">
         <div className="flex flex-wrap gap-5 items-center w-full max-md:max-w-full mb-10">
           <div className="flex flex-wrap flex-1 shrink gap-5 items-center self-stretch my-auto basis-0 min-w-[240px] max-md:max-w-full">
             <div className="flex relative flex-col justify-center self-stretch bg-gray-100 h-[70px] min-h-[70px] rounded-[16px] overflow-hidden w-[70px]">
@@ -137,8 +138,8 @@ const editworkexp=async(id)=>{
               </div>
             </div>
             <div className="flex flex-col self-stretch my-auto min-w-[240px]">
-              <div className="text-base text-gray-800">Work Detail</div>
-              <div className="mt-2 text-sm text-gray-500">
+              <div className="text-base text-white">Work Detail</div>
+              <div className="mt-2 text-sm text-red-500">
                 *Add your work experience one by one*
               </div>
             </div>
@@ -152,64 +153,69 @@ const editworkexp=async(id)=>{
 
             {/* Company Name */}
             <div id="input" className="relative">
-              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              <label className="block mb-2 text-sm font-medium text-white dark:text-white">
                 Company Name
               </label>
               <input
                 {...register("Comapanyname", { required: true })}
                 type="text"
                 placeholder="Company Name"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                                className="bg-gray-50 border-gray-300 text-white text-sm rounded-lg bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 block w-full p-2.5 "
+
               />
             </div>
 
             {/* Position */}
             <div id="input" className="relative">
-              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              <label className="block mb-2 text-sm font-medium text-white dark:text-white">
                 Position
               </label>
               <input
                 {...register("Position", { required: true })}
                 type="text"
                 placeholder="Position"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                                className="bg-gray-50 border-gray-300 text-white text-sm rounded-lg bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 block w-full p-2.5 "
+
               />
             </div>
 
             {/* Starting Date */}
             <div id="input" className="relative">
-              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              <label className="block mb-2 text-sm font-medium text-white dark:text-white">
                 Starting Date
               </label>
               <input
                 {...register("StartingDate", { required: true })}
                 type="date"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                                className="bg-gray-50 border-gray-300 text-white text-sm rounded-lg bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 block w-full p-2.5 "
+
               />
             </div>
 
             {/* Ending Date */}
             <div id="input" className="relative">
-              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              <label className="block mb-2 text-sm font-medium text-white dark:text-white">
                 Ending Date
               </label>
               <input
                 {...register("EndingDate", { required: true })}
                 type="date"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                                className="bg-gray-50 border-gray-300 text-white text-sm rounded-lg bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 block w-full p-2.5 "
+
               />
             </div>
 
             {/* Total Experience */}
             <div id="input" className="relative">
-              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              <label className="block mb-2 text-sm font-medium text-white dark:text-white">
                 Total Experience (in years)
               </label>
               <input
                 {...register("TotalExperince", { required: true })}
                 type="number"
                 placeholder="3"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                                className="bg-gray-50 border-gray-300 text-white text-sm rounded-lg bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300 block w-full p-2.5 "
+
               />
             </div>
 
@@ -238,7 +244,7 @@ const editworkexp=async(id)=>{
           <div className="sm:flex mt-5 sm:flex-row-reverse flex gap-4">
             <button
               type="submit"
-              className="w-fit rounded-lg text-sm px-5 py-2 h-[50px] border bg-green-500 hover:bg-violet-600 text-white transition-all duration-300"
+              className="w-fit rounded-lg text-sm px-5 py-2 h-[50px] bg-green-500 hover:bg-violet-600 text-white transition-all duration-300"
             >
               <div className="flex gap-2 items-center">Add Experience</div>
             </button>
@@ -247,9 +253,11 @@ const editworkexp=async(id)=>{
       </div>
     </div>
     {userId?.length > 1 && (
-  <div className="relative w-[1020px] ml-96  mt-5 mb-5 overflow-scroll border bg-white overflow-x-auto shadow-md sm:rounded-lg">
-    <table className="text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 w-full">
-      <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+  <div className="relative w-[1020px] ml-96  mt-5 mb-5 overflow-scroll bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl
+ overflow-x-auto  sm:rounded-lg">
+    <table className="text-sm text-left rtl:text-right text-white dark:text-gray-400 w-full">
+      <thead className="text-xs text-white uppercase bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl
+">
         <tr>
           <th className="px-6 py-3 ">#</th>
           <th className="px-6 py-3 min-w-[150px]">Company Name</th>
