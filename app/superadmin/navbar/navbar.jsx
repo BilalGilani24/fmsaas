@@ -22,7 +22,7 @@ const Navbar = () => {
       {/* Right Side - Actions */}
       <div className="flex items-center gap-5">
         {/* Profile */}
-        <Link href={"/admin/profile"}>
+        <Link href={"/superadmin/profile"}>
           <button className="flex items-center gap-2 px-4 py-2 rounded-2xl text-sm font-medium text-gray-800 bg-gradient-to-r from-gray-100 to-gray-200 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
             <User className="w-4 h-4 text-blue-600" />
             Profile
