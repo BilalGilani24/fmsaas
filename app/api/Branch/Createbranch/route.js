@@ -4,10 +4,9 @@ const prisma = new PrismaClient();
 
 export async function POST(req) {
   try {
-    const body = await req.json(); // Parse the request body
+    const body = await req.json();
     const { Branchname } = body;
 
-    // Validate the Branchname field
     if (!Branchname) {
       return new Response(JSON.stringify({ error: "Enter Branch Name" }), {
         status: 400,
@@ -15,7 +14,6 @@ export async function POST(req) {
       });
     }
 
-    // Create a new branch in the database
     const createbranch = await prisma.branch.create({
       data: { Branchname },
     });
@@ -26,7 +24,6 @@ export async function POST(req) {
     });
   } catch (error) {
     console.error("Error creating branch:", error);
-
     return new Response(JSON.stringify({ error: "Failed to create Branch" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
