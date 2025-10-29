@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic"; // ✅ Prevents static optimization errors
+
 import { PrismaClient } from '@prisma/client';
 import nodemailer from 'nodemailer';
 

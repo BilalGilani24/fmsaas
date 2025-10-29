@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic"; // ✅ Prevents static optimization errors
+
 const { PrismaClient, Role } = require("@prisma/client"); // Import Role
 const prisma = new PrismaClient();
 
