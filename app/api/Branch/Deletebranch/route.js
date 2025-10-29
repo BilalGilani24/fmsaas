@@ -1,5 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 
+export const dynamic = "force-dynamic"; // ✅ Prevents Next.js from static generation
+
 const prisma = new PrismaClient();
 
 export async function DELETE(req) {
@@ -15,9 +17,7 @@ export async function DELETE(req) {
     }
 
     const deletebranch = await prisma.branch.delete({
-      where: {
-        id: id,
-      },
+      where: { id },
     });
 
     return new Response(JSON.stringify(deletebranch), {
@@ -26,7 +26,6 @@ export async function DELETE(req) {
     });
   } catch (error) {
     console.error("Error deleting branch:", error);
-
     return new Response(JSON.stringify({ error: "Error deleting branch" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },

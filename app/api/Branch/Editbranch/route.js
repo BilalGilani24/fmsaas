@@ -1,5 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 
+export const dynamic = "force-dynamic"; // ✅ Prevents static generation issues
+
 const prisma = new PrismaClient();
 
 export async function PUT(req) {
@@ -8,7 +10,7 @@ export async function PUT(req) {
     const body = await req.json();
     const { id, Branchname } = body;
 
-    // Validate the inputs
+    // Validate inputs
     if (!id || !Branchname) {
       return new Response(
         JSON.stringify({ error: "Branch ID and Branch Name are required" }),
@@ -21,12 +23,8 @@ export async function PUT(req) {
 
     // Update the branch in the database
     const updatedBranch = await prisma.branch.update({
-      where: {
-        id: id,
-      },
-      data: {
-        Branchname,
-      },
+      where: { id },
+      data: { Branchname },
     });
 
     return new Response(JSON.stringify(updatedBranch), {
@@ -44,9 +42,12 @@ export async function PUT(req) {
       });
     }
 
-    return new Response(JSON.stringify({ error: "Error updating branch" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({ error: "Error updating branch" }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
   }
 }
