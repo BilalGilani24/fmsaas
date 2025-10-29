@@ -26,6 +26,7 @@ const Dashboard = () => {
   });
 
   const { userId, initializeUser } = useUserStore();
+  const [fetchbranch, setbranch] = useState([]);
 
   // Generic function to fetch stats
   const fetchStat = async (api, key, payload = {}) => {
@@ -39,8 +40,17 @@ const Dashboard = () => {
       setLoading((prev) => ({ ...prev, [key]: false }));
     }
   };
-
+const getbranches = async () => {
+    try {
+      const response = await axios.get("/api/Branch/Getbranch");
+      setbranch(response.data);
+   
+    } catch (error) {
+      toast.error("Error Fetching Branches");
+    }
+  };
   useEffect(() => {
+    getbranches()
     initializeUser();
     if (!userId) return;
 
@@ -56,14 +66,34 @@ const Dashboard = () => {
     { label: "Applications", key: "applications" },
     { label: "Visa", key: "visa" },
   ];
-
+ 
   return (
     <div className="relative ml-52 min-h-screen flex flex-col overflow-hidden text-white">
       {/* Header */}
       <div className="flex justify-center mt-6">
         <Headerpic />
       </div>
-
+<div className=" ml-[800px]  mt-3">
+          <form class="max-w-sm mx-auto">
+            <label
+              for="countries"
+              class="block mb-2 text-sm font-medium text-white dark:text-white"
+            >
+              Select Branch
+              <strong className="text-red-500">(Branch Wise Consulars)</strong>
+            </label>
+            <select
+              id="countries"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300"
+            >
+              <option>Choose Branch</option>
+              {fetchbranch.map((item, index) => (
+                <option key={index} value={item.Branchname}>
+                  {item.Branchname}
+                </option>
+              ))}
+            </select>
+          </form></div>
       {/* Stat cards */}
       <div className="flex flex-wrap cursor-default justify-center gap-8 mt-12 px-6">
         {statCards.map(({ label, key }, index) => (

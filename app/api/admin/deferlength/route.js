@@ -13,7 +13,22 @@ export async function POST(req) {
       });
     }
 
-    const countries = ["United Kingdom", "Australia", "Canada", "Malaysia","United States"];
+  const countries = [
+    "United States",
+    "United Kingdom",
+    "Canada",
+    "Malaysia",
+    "Australia",
+    "Finland",
+    "Lithuania",
+    "Spain",
+    "Ireland",
+    "France",
+    "Germany",
+    "Sweden",
+    "Romania",
+    "UAE",
+  ];
 
     const results = await Promise.all(
       countries.map(async (country) => {

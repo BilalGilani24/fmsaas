@@ -11,10 +11,14 @@ import Loader from "../../loader";
 const Viewstudent = () => {
   const { userId, initializeUser } = useUserStore();
   const [getdata,setdata]=useState([])
+  const [getdata1,setdata1]=useState([])
   const [getid,setid]=useState()
   const [getstatus,setstatus]=useState()
   const [isloading,setloading]=useState(false)
+  
   const [searchQuery, setSearchQuery] = useState("")
+  const [fetchbranch, setbranch] = useState([]);
+  const [getbranchname,setbranchname]=useState()
   
   const getstudents=async()=>{
     try {
@@ -43,14 +47,24 @@ const editcreatedstudent = async(id)=>{
     toast.error("Error updating student status")
   }
 }
-
+ const getbranches = async () => {
+      try {
+        const response = await axios.get("/api/Branch/Getbranch");
+        setbranch(response.data);
+     
+      } catch (error) {
+        toast.error("Error Fetching Branches");
+      }
+    };
   useEffect(()=>{
+    getbranches()
     initializeUser()
     if(userId){
   getstudents()
     }
   getuser()
   },[userId])
+ 
    const movetoapplication = async (id) => {
    try {
      
@@ -70,7 +84,27 @@ const editcreatedstudent = async(id)=>{
  const [isOpen, setIsOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [getstudentid,setstudentid]=useState()
-
+      const [branchdata,setbranchdata]=useState([])
+  
+  useEffect(()=>{
+ if(getbranchname){
+      fetchbranchenq()
+    }
+  },[getbranchname])
+    const fetchbranchenq=async()=>{
+      try {
+        setloading(false);
+        const res = await axios.post('/api/superadmin/branchstudents',{
+           BranchName:getbranchname
+        })
+setbranchdata(res.data)
+      } catch (error) {
+        toast.error("Error fetching branch wise  data")
+        console.log(error)
+      }finally {
+      setloading(true);
+    }
+    }
   const handleSelect = (user) => {
     setSelectedUser(user);
     
@@ -101,12 +135,14 @@ const assigncase= async()=>{
   }
 }
 const [isSubmitted,setSubmitted]=useState([])
+const [isSubmitted1,setSubmitted1]=useState([])
  const docsubmission=async(id)=>{
   try {
     const res=await axios.post('/api/admin/document',{
       StudentId:id
     })
     setSubmitted(res.data)
+    setSubmitted1(res.data)
   } catch (error) {
     toast.error("Error displaying document submission")
   }
@@ -114,6 +150,11 @@ const [isSubmitted,setSubmitted]=useState([])
 
  useEffect(() => {
   if (getdata.length > 0) {
+    // Extract all unique userIds from the data
+    const ids = getdata.map(item => item.userId);
+    docsubmission(ids);
+  }
+   if (getdata1.length > 0) {
     // Extract all unique userIds from the data
     const ids = getdata.map(item => item.userId);
     docsubmission(ids);
@@ -201,6 +242,29 @@ const handleSearchSubmit = (e) => {
       )}
     </div>
       <Viewstudentpic />
+      <div className=" ml-[950px]  flex-col  mt-3">
+          <form class="max-w-sm mx-auto">
+            <label
+              for="countries"
+              class="block mb-2 text-sm font-medium text-white dark:text-white"
+            >
+              Select Branch
+              <strong className="text-red-500">(Branch Wise Consulars)</strong>
+            </label>
+            <select
+              id="countries"
+               onChange={(e)=>setbranchname(e.target.value)}
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300"
+            >
+              <option>Choose Branch</option>
+              {fetchbranch.map((item, index) => (
+                <option              
+ key={index} value={item.Branchname}>
+                  {item.Branchname}
+                </option>
+              ))}
+            </select>
+          </form> <div>{getbranchname?<div className=" cursor-pointer" onClick={()=>setbranchname('')}>Clear</div>:""}</div>  </div>
       <div className="flex flex-row justify-end mt-10">
         <div className="flex w-auto p-3 h-11 mr-[390px] rounded-lg gap-5 items-center justify-center bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl flex-row">
          
@@ -281,7 +345,7 @@ const handleSearchSubmit = (e) => {
             </thead>
             {!isloading?(<div className="p-5">  <Loader/></div>):(
             <tbody>
-              {filteredData.map((item)=>
+              {(getbranchname ? branchdata : filteredData).map((item)=>
             
               item.id==getid ? <tr key={item.id} className="bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl">
                 <th
@@ -346,13 +410,13 @@ const handleSearchSubmit = (e) => {
                 </td>
                             <td>
   {(() => {
-    const match = isSubmitted.find(
+    const match = getbranchname? isSubmitted1: isSubmitted.find(
       sub => sub.StudentId === item.userId // compare IDs
     );
 
     if (!match) {
       return (
-        <div className="px-6 py-2 text-white rounded-lg bg-gray-300">
+        <div className="px-6 py-2 text-white rounded-lg bg-red-500">
           No Data
         </div>
       );

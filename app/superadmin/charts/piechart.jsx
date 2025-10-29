@@ -8,7 +8,22 @@ import { PieChart, Pie, Tooltip, ResponsiveContainer } from "recharts";
 const CustomPieChart = () => {
   const { userId, initializeUser } = useUserStore();
 
-  const countries = ["Australia", "United Kingdom", "United States", "Canada", "Malaysia"];
+    const countries = [
+    "United States",
+    "United Kingdom",
+    "Canada",
+    "Malaysia",
+    "Australia",
+    "Finland",
+    "Lithuania",
+    "Spain",
+    "Ireland",
+    "France",
+    "Germany",
+    "Sweden",
+    "Romania",
+    "UAE",
+  ];
 
   const [leads, setLeads] = useState(
     countries.reduce((acc, country) => ({ ...acc, [country]: 0 }), {})

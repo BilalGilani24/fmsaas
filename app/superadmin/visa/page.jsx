@@ -17,6 +17,40 @@ const Visa = () => {
   const [picImage, setImage] = useState();
   const [searchQuery, setSearchQuery] = useState("");
 const [isloading,setloading]=useState(false)
+    const [fetchbranch, setbranch] = useState([]);
+    const [branchdata,setbranchdata]=useState([])
+  const [getbranchname,setbranchname]=useState()
+console.log(branchdata)
+const getbranches = async () => {
+    try {
+      const response = await axios.get("/api/Branch/Getbranch");
+      setbranch(response.data);
+   
+    } catch (error) {
+      toast.error("Error Fetching Branches");
+    }
+  };
+   const fetchbranchvisa=async()=>{
+        try {
+         setloading(false);
+          const res = await axios.post('/api/superadmin/branchvisa',{
+            BranchName:getbranchname
+          })
+  setbranchdata(res.data)
+        } catch (error) {
+          toast.error("Error fetching branch wise  data")
+          console.log(error)
+        }finally {
+        setloading(true);
+      }
+      }
+      useEffect(()=>{
+        getbranches()
+        if(getbranchname){
+          fetchbranchvisa()
+        }
+      },[getbranchname])
+ 
   const getvisa = async () => {
     try {
       setloading(false)
@@ -103,6 +137,29 @@ const [isloading,setloading]=useState(false)
       <div>
         <Visapic />
       </div>
+      <div className=" ml-[950px]  flex-col  mt-3">
+          <form class="max-w-sm mx-auto">
+            <label
+              for="countries"
+              class="block mb-2 text-sm font-medium text-white dark:text-white"
+            >
+              Select Branch
+              <strong className="text-red-500">(Branch Wise Consulars)</strong>
+            </label>
+            <select
+              id="countries"
+               onChange={(e)=>setbranchname(e.target.value)}
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300"
+            >
+              <option>Choose Branch</option>
+              {fetchbranch.map((item, index) => (
+                <option              
+ key={index} value={item.Branchname}>
+                  {item.Branchname}
+                </option>
+              ))}
+            </select>
+          </form><div>{getbranchname?<div className=" cursor-pointer" onClick={()=>setbranchname('')}>Clear</div>:""}</div>  </div>
       <div className="flex flex-row justify-end mt-10">
         <div className="flex w-auto p-3 h-11 mr-[385px]  rounded-lg gap-5 items-center justify-center bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl  flex-row">
           <div className="flex text-sm flex-row cursor-pointer hover:text-blue-600 gap-2">
@@ -185,7 +242,7 @@ const [isloading,setloading]=useState(false)
             </thead>
             {!isloading?(<div className="p-5">  <Loader/></div>):(
             <tbody>
-              {getdata
+              {(getbranchname? branchdata : getdata)
                 .filter((item) =>
                   item.Name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
                   item.Email?.toLowerCase().includes(searchQuery.toLowerCase()) ||

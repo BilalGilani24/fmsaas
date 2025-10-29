@@ -2,15 +2,16 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function GET(req) {
+export async function POST(req) {
   try {
+    const body = await req.json();
+    const { BranchName } = body;
+
     const getconsular = await prisma.user.findMany({
-   
-where: {
-        
+      where: {
+        BranchName: BranchName, // ✅ Correct filter
         Role: "Admin",
       },
-    
       select: {
         Name: true,
         Email: true,
@@ -20,11 +21,13 @@ where: {
         BranchName: true,
       },
     });
+
     return new Response(JSON.stringify(getconsular), { status: 200 });
   } catch (error) {
-    console.log(error);
-    return new Response(JSON.stringify({ Error: "Error Fetching Branches" }), {
-      status: 500,
-    });
+    console.error(error);
+    return new Response(
+      JSON.stringify({ Error: "Error Fetching Branches" }),
+      { status: 500 }
+    );
   }
 }

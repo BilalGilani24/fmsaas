@@ -1,17 +1,43 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Createconsulars from "./createconsulars/createconsulars";
-import useBranchStore from "@/app/store/branchstore";
 import axios from "axios";
 import { toast } from "react-toastify";
 
 const Consulars = () => {
-  const { branches, fetchBranches } = useBranchStore();
   const [getdata, setdata] = useState([]);
-
-  useEffect(() => {
-    fetchBranches();
-  }, [fetchBranches]);
+      const [fetchbranch, setbranch] = useState([]);
+    const [getbranchname,setbranchname]=useState()
+      const [branchdata,setbranchdata]=useState([])
+  
+const getbranches = async () => {
+    try {
+      const response = await axios.get("/api/Branch/Getbranch");
+      setbranch(response.data);
+   
+    } catch (error) {
+      toast.error("Error Fetching Branches");
+    }
+  };
+     const fetchbranchconsulars=async()=>{
+        try {
+          
+          const res = await axios.post('/api/superadmin/branchwiseconsulars',{
+            BranchName:getbranchname
+          })
+  setbranchdata(res.data)
+        } catch (error) {
+          toast.error("Error fetching branch wise  data")
+          console.log(error)
+        }
+      }
+      useEffect(()=>{
+        getbranches()
+        if(getbranchname){
+          fetchbranchconsulars()
+        }
+      },[getbranchname])
+  
   const fetchconsulars = async () => {
     try {
       const response = await axios.get("/api/fetchconsulars");
@@ -23,34 +49,36 @@ const Consulars = () => {
   useEffect(() => {
     fetchconsulars();
   }, []);
+  
   return (
     <div>
       <div className="dm-sans">
         <div>
           <Createconsulars />
         </div>
-        <div className=" ml-[940px]  mt-3">
+       <div className=" ml-[950px]  flex-col  mt-3">
           <form class="max-w-sm mx-auto">
             <label
               for="countries"
-              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              class="block mb-2 text-sm font-medium text-white dark:text-white"
             >
-              Select Branch{" "}
-              <strong className="text-blue-500">(Branch Wise Consulars)</strong>
+              Select Branch
+              <strong className="text-red-500">(Branch Wise Consulars)</strong>
             </label>
             <select
               id="countries"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+               onChange={(e)=>setbranchname(e.target.value)}
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300"
             >
               <option>Choose Branch</option>
-              {branches.map((item, index) => (
-                <option key={index} value={item.Branchname}>
+              {fetchbranch.map((item, index) => (
+                <option              
+ key={index} value={item.Branchname}>
                   {item.Branchname}
                 </option>
               ))}
             </select>
-          </form>
-        </div>
+          </form><div>{getbranchname?<div className=" cursor-pointer" onClick={()=>setbranchname('')}>Clear</div>:""}</div>  </div>
         <div class="relative w-[940px] overflow-x-scroll  rounded-md mt-5 mb-10 ml-[270px]">
           <table class="w-full text-sm text-left rtl:text-right text-white dark:text-gray-400">
             <thead class="text-xs text-white uppercase bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl
@@ -80,7 +108,7 @@ const Consulars = () => {
                 </th>
               </tr>
             </thead>
-            {getdata.map((item, index) => (
+            {(getbranchname? branchdata: getdata).map((item, index) => (
               <tbody key={index}>
                 <tr class="bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl
  border-b dark:bg-gray-800 dark:border-gray-700">

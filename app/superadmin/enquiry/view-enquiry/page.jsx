@@ -23,7 +23,7 @@ const Viewenquiry = () => {
   const [getid, setid] = useState();
 
   const { userId, initializeUser } = useUserStore();
-  
+  const [getbranchname,setbranchname]=useState()
   const Enquirydeatails = async () => {
     isloading(false);
     try {
@@ -39,13 +39,46 @@ const Viewenquiry = () => {
       isloading(true);
     }
   };
-
-  useEffect(() => {
+    const [fetchbranch, setbranch] = useState([]);
+    const [branchdata,setbranchdata]=useState([])
+  
+   useEffect(() => {
+  
+    getbranches()
     initializeUser()
     if(userId){
       Enquirydeatails();
     }
   }, []);
+  useEffect(()=>{
+ if(getbranchname){
+      fetchbranchenq()
+    }
+  },[getbranchname])
+    const fetchbranchenq=async()=>{
+      try {
+        isloading(false);
+        const res = await axios.post('/api/superadmin/branchenq',{
+          BranchName:getbranchname
+        })
+setbranchdata(res.data)
+      } catch (error) {
+        toast.error("Error fetching branch wise  data")
+        console.log(error)
+      }finally {
+      isloading(true);
+    }
+    }
+const getbranches = async () => {
+    try {
+      const response = await axios.get("/api/Branch/Getbranch");
+      setbranch(response.data);
+   
+    } catch (error) {
+      toast.error("Error Fetching Branches");
+    }
+  };
+ 
 
   useEffect(() => {
     if (searchQuery.trim() === "") {
@@ -126,6 +159,29 @@ const Viewenquiry = () => {
       <div>
         <Viewenqpic />
       </div>
+      <div className=" ml-[950px]  flex-col  mt-3">
+          <form class="max-w-sm mx-auto">
+            <label
+              for="countries"
+              class="block mb-2 text-sm font-medium text-white dark:text-white"
+            >
+              Select Branch
+              <strong className="text-red-500">(Branch Wise Consulars)</strong>
+            </label>
+            <select
+              id="countries"
+               onChange={(e)=>setbranchname(e.target.value)}
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300"
+            >
+              <option>Choose Branch</option>
+              {fetchbranch.map((item, index) => (
+                <option              
+ key={index} value={item.Branchname}>
+                  {item.Branchname}
+                </option>
+              ))}
+            </select>
+          </form><div>{getbranchname?<div className=" cursor-pointer" onClick={()=>setbranchname('')}>Clear</div>:""}</div>  </div>
       <div className="flex flex-row justify-end mt-10">
         <div className="flex w-auto p-2 h-11 mr-[398px]  rounded-lg gap-5 items-center justify-center bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl  flex-row">
          
@@ -162,7 +218,7 @@ const Viewenquiry = () => {
         </form>
       </div>
 
-      <div className="w-[1100px]   mb-5 rounded ml-56 mt-3 overflow-x-auto" >
+      <div className="w-[1100px] h-auto min-h-60  mb-5 rounded ml-56 mt-3 overflow-x-auto" >
         <div className="relative w-full ">
           <table className="w-full  text-sm text-left rtl:text-right text-white dark:text-gray-400">
             <thead className="text-xs  bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl ">
@@ -230,10 +286,10 @@ const Viewenquiry = () => {
           
             ) : (
               <tbody>
-                {filteredDetails.map((item, index) => (
+                {(getbranchname ? branchdata : filteredDetails).map((item, index) => (
                   <tr
                     key={index}
-                    className="  bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl "
+                    className=" bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl "
                   >
                     <th
                       scope="row"

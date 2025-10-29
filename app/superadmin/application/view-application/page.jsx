@@ -13,6 +13,7 @@ const Viewapplication = () => {
   const [Viewapplicationmodal, setviewapplicationmodal] = useState(false);
   const [createapplicationmodal, setcreateapplicationmodal] = useState(false);
   const [data, setdata] = useState([]);
+  const [data1,setdata1]=useState([])
   const [filteredData, setFilteredData] = useState([]); // 🔍 for search results
   const [searchTerm, setSearchTerm] = useState(""); // 🔍 search input
 
@@ -21,7 +22,40 @@ const Viewapplication = () => {
   const [isloading, setloading] = useState(false);
   const [selectedEmail, setSelectedEmail] = useState();
   const [selectedCountry, setSelectedCountry] = useState();
-
+    const [getbranchname,setbranchname]=useState()
+      const [branchdata,setbranchdata]=useState([])
+  
+      const [fetchbranch, setbranch] = useState([]);
+  
+const getbranches = async () => {
+    try {
+      const response = await axios.get("/api/Branch/Getbranch");
+      setbranch(response.data);
+   
+    } catch (error) {
+      toast.error("Error Fetching Branches");
+    }
+  };
+     const fetchbranchapplication=async()=>{
+       try {
+         setloading(false);
+         const res = await axios.post('/api/superadmin/branchapplication',{
+           BranchName:getbranchname
+         })
+            setdata1(res.data);
+ setbranchdata(res.data)
+       } catch (error) {
+         toast.error("Error fetching branch wise  data")
+         console.log(error)
+       }finally {
+     setloading(true);
+     }
+     }
+     useEffect(()=>{
+if(getbranchname){
+  fetchbranchapplication()
+}
+     },[getbranchname])
   const getapplication = async () => {
     try {
       setloading(false);
@@ -38,6 +72,7 @@ const Viewapplication = () => {
 
   useEffect(() => {
     initializeUser();
+    getbranches()
     if (userId) {
       getapplication();
     }
@@ -92,12 +127,14 @@ const Viewapplication = () => {
   };
 
   const [isSubmitted, setSubmitted] = useState([]);
+  const [isSubmitted1, setSubmitted1] = useState([]);
   const docsubmission = async (id) => {
     try {
       const res = await axios.post("/api/admin/document", {
         StudentId: id,
       });
       setSubmitted(res.data);
+      setSubmitted1(res.data)
     } catch (error) {
       toast.error("Error displaying document submission");
     }
@@ -108,7 +145,11 @@ const Viewapplication = () => {
       const ids = data.map((item) => item.userId);
       docsubmission(ids);
     }
-  }, [data]);
+    if(data1.length>0){
+       const ids = data.map((item) => item.userId);
+      docsubmission(ids);
+    }
+  }, [data,data1]);
 
   // 🔍 Auto Search functionality (no button click)
   useEffect(() => {
@@ -146,6 +187,29 @@ const Viewapplication = () => {
       <div>
         <Applicationpic />
       </div>
+      <div className=" ml-[950px]  flex-col  mt-3">
+          <form class="max-w-sm mx-auto">
+            <label
+              for="countries"
+              class="block mb-2 text-sm font-medium text-white dark:text-white"
+            >
+              Select Branch
+              <strong className="text-red-500">(Branch Wise Consulars)</strong>
+            </label>
+            <select
+              id="countries"
+               onChange={(e)=>setbranchname(e.target.value)}
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 bg-white/20  border-white/30 focus:bg-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400 transition placeholder-gray-300"
+            >
+              <option>Choose Branch</option>
+              {fetchbranch.map((item, index) => (
+                <option              
+ key={index} value={item.Branchname}>
+                  {item.Branchname}
+                </option>
+              ))}
+            </select>
+          </form><div>{getbranchname?<div className=" cursor-pointer" onClick={()=>setbranchname('')}>Clear</div>:""}</div>  </div>
       <div>
         {/* Assign Modal */}
         {isOpen && (
@@ -297,7 +361,7 @@ const Viewapplication = () => {
               </div>
             ) : (
               <tbody>
-                {filteredData.map((item) => (
+                {(getbranchname ? branchdata : filteredData).map((item) => (
                   <tr
                     key={item.id}
                     className="border-b bg-white/10 backdrop-blur-xl hover:bg-white/15 border-white/20 shadow-xl text-white"
@@ -362,7 +426,7 @@ const Viewapplication = () => {
                     </td>
                     <td>
                       {(() => {
-                        const match = isSubmitted.find(
+                        const match = getbranchname? isSubmitted1 : isSubmitted.find(
                           (sub) => sub.StudentId === item.userId
                         );
                         if (!match) {
