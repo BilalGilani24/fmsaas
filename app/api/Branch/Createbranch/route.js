@@ -1,4 +1,7 @@
+export const dynamic = "force-dynamic"; // ✅ Prevents static optimization errors
+
 import { PrismaClient } from "@prisma/client";
+import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
@@ -8,25 +11,22 @@ export async function POST(req) {
     const { Branchname } = body;
 
     if (!Branchname) {
-      return new Response(JSON.stringify({ error: "Enter Branch Name" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
+      return NextResponse.json(
+        { error: "Enter Branch Name" },
+        { status: 400 }
+      );
     }
 
     const createbranch = await prisma.branch.create({
       data: { Branchname },
     });
 
-    return new Response(JSON.stringify(createbranch), {
-      status: 201,
-      headers: { "Content-Type": "application/json" },
-    });
+    return NextResponse.json(createbranch, { status: 201 });
   } catch (error) {
     console.error("Error creating branch:", error);
-    return new Response(JSON.stringify({ error: "Failed to create Branch" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    return NextResponse.json(
+      { error: "Failed to create Branch" },
+      { status: 500 }
+    );
   }
 }
