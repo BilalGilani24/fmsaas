@@ -106,7 +106,7 @@ const Login = () => {
 
             {/* Social links */}
             <div className="mt-8 text-center">
-              <p className="text-gray-300 mb-3">Our Social Media's</p>
+              <p className="text-gray-300 mb-3">Our Social Media</p>
               <div className="flex justify-center gap-4">
                 {["instagram", "facebook", "twitter", "linkedin"].map((icon) => (
                   <Image
@@ -133,9 +133,9 @@ const Login = () => {
             <h1 className="text-2xl font-bold mt-6 text-center">
               FM Consultants E-Portal
             </h1>
-            <p className="text-pink-100 text-center mt-2">
-              Opening Doors to Worldwide Opportunities
-            </p>
+    <p className="text-pink-100 text-center mt-2">
+  Opening Doors to Worldwide Opportunities&nbsp;&rsquo;
+</p>
           </div>
         </div>
       </div>

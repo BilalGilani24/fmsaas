@@ -324,7 +324,7 @@ const Sidebar = () => {
             className="w-12 h-12 rounded-xl border border-white/20"
           />
           <div className="ml-3">
-            {branchConsulars.map((item)=><div>
+            {branchConsulars.map((item)=><div key={item.id}>
                 <h4 className="font-semibold text-white">{item.Name}</h4>
             <span className="text-xs text-white/60">
              {item.Email}
