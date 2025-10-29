@@ -1,8 +1,6 @@
 export const dynamic = "force-dynamic"; // ✅ Prevents static optimization errors
+import prisma from "@/lib/prisma";
 
-import { PrismaClient, Role } from "@prisma/client";
-
-const prisma = new PrismaClient();
 
 export async function POST(req) {
   try {

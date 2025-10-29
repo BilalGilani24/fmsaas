@@ -1,10 +1,8 @@
 export const dynamic = "force-dynamic"; // ✅ Prevents static optimization errors
 
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prisma";
 
-const prisma = new PrismaClient();
-
-export async function PUT(req, res) {
+export async function PUT(req) {
   try {
     const body = await req.json();
     const {

@@ -2,9 +2,8 @@ export const dynamic = "force-dynamic"; // ✅ Prevents static optimization erro
 
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prisma";
 
-const prisma = new PrismaClient();
 
 export const authOptions = {
   providers: [

@@ -1,8 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prisma";
 
 export const dynamic = "force-dynamic"; // ✅ Prevents static generation issues
 
-const prisma = new PrismaClient();
+
 
 export async function PUT(req) {
   try {

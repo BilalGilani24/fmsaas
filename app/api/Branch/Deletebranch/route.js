@@ -1,8 +1,9 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prisma";
+
 
 export const dynamic = "force-dynamic"; // ✅ Prevents Next.js from static generation
 
-const prisma = new PrismaClient();
+
 
 export async function DELETE(req) {
   try {

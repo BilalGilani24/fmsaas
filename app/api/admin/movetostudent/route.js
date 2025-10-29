@@ -1,9 +1,10 @@
 export const dynamic = "force-dynamic"; // ✅ Prevents static optimization errors
 
-import { PrismaClient } from '@prisma/client';
+import prisma from "@/lib/prisma";
+
 import nodemailer from 'nodemailer';
 
-const prisma = new PrismaClient();
+;
 
 function generateRandomPassword(length = 10) {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=';
