@@ -13,7 +13,7 @@ import {
 import axios from "axios";
 import useUserStore from "@/app/store/userid";
 
-const Enrolldefer = () => {
+const Enrolldefer = ({ branchName }) => {
   const { userId, initializeUser } = useUserStore();
 
   const countries = [
@@ -41,9 +41,9 @@ const Enrolldefer = () => {
   const handleMouseLeave = ({ dataKey }) =>
     setOpacity((op) => ({ ...op, [dataKey]: 1 }));
 
-  const fetchStats = async (api, key) => {
+  const fetchStats = async (api, key, payload) => {
     try {
-      const res = await axios.post(api, { AdminId: userId });
+      const res = await axios.post(api, payload);
       const data = res.data || [];
       const counts = {};
       countries.forEach(
@@ -58,12 +58,27 @@ const Enrolldefer = () => {
     }
   };
 
+  const fetchAllStats = () => {
+    if (branchName) {
+      // Fetch by branch name
+      fetchStats("/api/superadmin/branchdeferlength", "Defer", { BranchName: branchName });
+      fetchStats("/api/superadmin/branchenrolllength", "Enroll", { BranchName: branchName });
+    } else if (userId) {
+      // Fetch by userId (original behavior)
+      fetchStats("/api/admin/deferlength", "Defer", { AdminId: userId });
+      fetchStats("/api/admin/enrollength", "Enroll", { AdminId: userId });
+    }
+  };
+
   useEffect(() => {
     initializeUser();
-    if (!userId) return;
-    fetchStats("/api/admin/deferlength", "Defer");
-    fetchStats("/api/admin/enrollength", "Enroll");
-  }, [userId]);
+  }, []);
+
+  useEffect(() => {
+    if (userId || branchName) {
+      fetchAllStats();
+    }
+  }, [userId, branchName]);
 
   const data = countries.map((country) => ({
     name: country,

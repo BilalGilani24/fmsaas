@@ -5,10 +5,10 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { PieChart, Pie, Tooltip, ResponsiveContainer } from "recharts";
 
-const CustomPieChart = () => {
+const CustomPieChart = ({ branchName }) => {
   const { userId, initializeUser } = useUserStore();
 
-    const countries = [
+  const countries = [
     "United States",
     "United Kingdom",
     "Canada",
@@ -33,7 +33,18 @@ const CustomPieChart = () => {
   const fetchLeads = async () => {
     try {
       setIsLoading(true);
-      const res = await axios.post("/api/admin/enqleads", { userId });
+      
+      let res;
+      if (branchName) {
+        // Fetch by branch name
+        res = await axios.post("/api/superadmin/branchenqleads", { BranchName: branchName });
+      } else if (userId) {
+        // Fetch by userId (original behavior)
+        res = await axios.post("/api/admin/enqleads", { userId });
+      } else {
+        return;
+      }
+
       const data = res.data || [];
 
       const counts = {};
@@ -51,8 +62,13 @@ const CustomPieChart = () => {
 
   useEffect(() => {
     initializeUser();
-    if (userId) fetchLeads();
-  }, [userId]);
+  }, []);
+
+  useEffect(() => {
+    if (userId || branchName) {
+      fetchLeads();
+    }
+  }, [userId, branchName]);
 
   const chartData = countries.map((country) => ({
     name: country,

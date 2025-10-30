@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic"; // ✅ Prevents static optimization erro
 
 import prisma from "@/lib/prisma";
 
+
 export async function POST(req) {
   try {
     const { AdminId } = await req.json();

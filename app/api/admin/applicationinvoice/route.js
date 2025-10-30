@@ -1,5 +1,4 @@
 export const dynamic = "force-dynamic"; // ✅ Prevents static optimization errors
-
 import prisma from "@/lib/prisma";
 export async function POST(req) {
   try {

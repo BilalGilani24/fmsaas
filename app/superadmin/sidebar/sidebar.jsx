@@ -2,6 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import React, { useEffect, useState, useCallback } from "react";
+import { signOut } from "next-auth/react";
 import {
   LayoutDashboard,
   CalendarDays,
@@ -22,6 +23,8 @@ import {
   ReceiptPoundSterling,
   MapPinHouse,
   HousePlus,
+  UserRound,
+  LogOut,
 } from "lucide-react";
 import useUserStore from "@/app/store/userid";
 
@@ -33,6 +36,12 @@ const Sidebar = () => {
     initializeUser();
     fetchBranchConsulars();
   }, []);
+
+  const handleSignOut = async () => {
+    localStorage.clear();
+    sessionStorage.clear();
+    await signOut({ callbackUrl: "/" });
+  };
 
   const toggleSection = useCallback(
     (section) => setOpenSection((prev) => (prev === section ? null : section)),
@@ -108,12 +117,17 @@ const Sidebar = () => {
         { title: "Consulars", href: "/superadmin/branch/consulars", icon: <UserCog /> },
       ],
     },
+    {
+      title: "Profile",
+      href: "/superadmin/profile",
+      icon: <UserRound />,
+    },
   ];
 
   return (
     <aside
       id="sidebar-multi-level-sidebar"
-      className="fixed top-0 z-40 w-60 h-screen bg-white/10  border-white/20 shadow-xl transition-transform sm:translate-x-0"
+      className="fixed top-0 z-40 w-60 h-screen bg-white/10 border-white/20 shadow-xl transition-transform sm:translate-x-0"
       aria-label="Sidebar"
     >
       {/* Logo */}
@@ -170,23 +184,33 @@ const Sidebar = () => {
               </li>
             )
           )}
+
+          {/* Logout Button */}
+          <li>
+            <button
+              onClick={handleSignOut}
+              className="flex items-center w-full p-2 text-white rounded-lg hover:bg-white/20 group"
+            >
+              <LogOut />
+              <span className="ms-6">Logout</span>
+            </button>
+          </li>
         </ul>
 
         {/* Profile Section */}
-         <div className="border-t border-white/20 mb-12 pt-4 px-2 flex items-center">
+        <div className="border-t border-white/20 mb-12 pt-4 px-2 flex items-center">
           <img
             src="/cat.jpg"
             alt="Avatar"
             className="w-12 h-12 rounded-xl border border-white/20"
           />
           <div className="ml-3">
-            {branchConsulars.map((item)=><div key={item.id}>
+            {branchConsulars.map((item) => (
+              <div key={item.id}>
                 <h4 className="font-semibold text-white">{item.Name}</h4>
-            <span className="text-xs text-white/60">
-             {item.Email}
-            </span>
-            </div>)}
-           
+                <span className="text-xs text-white/60">{item.Email}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>

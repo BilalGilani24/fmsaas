@@ -1,8 +1,7 @@
-export const dynamic = "force-dynamic"; // ✅ Prevents static optimization errors
+export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-
 
 export async function POST(req) {
   try {
@@ -11,7 +10,7 @@ export async function POST(req) {
 
     if (!BranchName) {
       return NextResponse.json(
-        { error: "Branch name is required" },
+        { error: "BranchName is required" },
         { status: 400 }
       );
     }
@@ -37,38 +36,36 @@ export async function POST(req) {
       );
     }
 
-    // Fetch all consultancy invoices linked to those admin IDs
-    const consultancyInvoices = await prisma.consultancyinvoice.findMany({
+    // Fetch visas based on admin IDs
+    const getvisa = await prisma.visa.findMany({
       where: {
-        userId: { in: adminIds }, // change if your linking field is named differently
+        AdminId: { in: adminIds },
+        Visastatus: {
+          in: ["Applied", "Not Applied"],
+        },
       },
       select: {
         id: true,
-        Name: true,
-        Universityname: true,
-        StudentId: true,
-        Phonenumber: true,
-        Email: true,
-        Branchname: true,
+        Branch: true,
+        Intake: true,
         Country: true,
-        PaymentMethod: true,
-        Paymentstatus: true,
-        Status: true,
-        Consultancyfee: true,
-        Docs: true,
+        Applylevel: true,
+        Mobilenumber: true,
+        Email: true,
+        Name: true,
         createdAt: true,
         updatedAt: true,
-        Secounddocs: true,
-        Secoundpayment: true,
-        SecoundpaymentMethod: true,
+        AdminId: true,
+        userId: true,
+        Visastatus: true,
       },
     });
 
-    return NextResponse.json( consultancyInvoices );
+    return NextResponse.json(getvisa, { status: 200 });
   } catch (error) {
-    console.error("Error fetching consultancy invoices:", error);
+    console.error("Error fetching visas:", error);
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: "Error fetching visas" },
       { status: 500 }
     );
   }
